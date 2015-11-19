@@ -7,40 +7,45 @@
 //
 
 import Foundation
+import ObjectMapper
 
-public class Build: NSObject {
-
-  public var authorDate: NSDate
-  public var buildParametersData: NSData?
-  public var compareURLString: String?
-  public var buildID: String?
-  public var urlString: String?
-  public var dontBuild: String?
-  public var isCanceled: NSNumber
-  public var isInfrastructureFail: NSNumber
-  public var isOpenSource: NSNumber
-  public var isTimedout: NSNumber
-  public var lifecycle: String?
-  public var number: NSNumber
-  public var parallelCount: NSNumber
-  public var queuedAt: NSDate?
-  public var startedAt: NSDate?
-  public var status: String?
-  public var stoppedAt: NSDate?
-  public var timeMillis: NSNumber?
-  public var why: String?
-  public var branch: Branch?
-  public var commits: NSSet?
-  public var nodes: NSSet?
-  public var project: Project?
-  public var retries: NSSet?
-  public var retryOf: Build?
-  public var steps: NSSet?
-  public var triggeredCommit: Commit?
-  public var user: User?
+class Build: Mappable {
   
-  init(buildData: NSDictionary) {
-    super.init()
+ var authorDate: NSDate?
+ var buildParametersData: NSData?
+ var compareURLString: String?
+ var buildID: String?
+ var urlString: String?
+ var dontBuild: String?
+ var isCanceled: NSNumber?
+ var isInfrastructureFail: NSNumber?
+ var isOpenSource: NSNumber?
+ var isTimedout: NSNumber?
+ var lifecycle: String?
+ var number: NSNumber?
+ var parallelCount: NSNumber?
+ var queuedAt: NSDate?
+ var startedAt: NSDate?
+ var status: String?
+ var stoppedAt: NSDate?
+ var timeMillis: NSNumber?
+ var why: String?
+ var branch: Branch?
+ var commits: NSSet?
+ var nodes: NSSet?
+ var project: Project?
+ var retries: NSSet?
+ var retryOf: Build?
+ var steps: NSSet?
+ var triggeredCommit: Commit?
+ var user: User?
+  
+  required init?(_ map: Map) {
+    
+  }
+  
+  func mapping(map: Map) {
+    authorDate        <- map["authorDate"]
   }
 
 }

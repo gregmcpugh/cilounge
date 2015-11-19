@@ -7,18 +7,29 @@
 //
 
 import Foundation
-
-public class Node: NSObject {
-
-  public var imageID: String
-  public var port: NSNumber
-  public var publicIPAddress: String
-  public var sshEnabled: NSNumber
-  public var username: String
-  public var nodeID: String
-  public var builds: NSSet
-
-  init(nodeData: NSDictionary) {
-    super.init()
+import ObjectMapper
+class Node: Mappable {
+  
+  var imageID: String?
+  var port: NSNumber?
+  var publicIPAddress: String?
+  var sshEnabled: NSNumber?
+  var username: String?
+  var nodeID: String?
+  var builds: NSSet?
+  
+  required init?(_ map: Map) {
+    
+  }
+  
+  
+  func mapping(map: Map) {
+    imageID <- map["imageID"]
+    port  <- map["port"]
+    publicIPAddress  <- map["publicIPAddress"]
+    sshEnabled  <- map["sshEnabled"]
+    username  <- map["username"]
+    nodeID  <- map["nodeID"]
+    builds  <- map["builds"]
   }
 }

@@ -7,7 +7,7 @@
 //
 
 import Foundation
-
+import ObjectMapper
 
 class Branch: Mappable {
 
@@ -28,15 +28,4 @@ class Branch: Mappable {
     project     <- map["project"]
     pushers     <- map["pushers"]
   }
-  
-//  init(branchData: NSDictionary) {
-//    super.init()
-//    
-//    self.name = branchData["name"] as? String ?? ""
-//    self.builds = branchData["builds"] as? NSSet ?? NSSet()
-//    self.branchID = branchData["branchID"] as? NSString ?? ""
-//    self.project = branchData["project"] as? Project ?? Project()
-//    self.pushers = branchData["pushers"] as? NSSet ?? NSSet()
-//    
-//  }
 }

@@ -7,18 +7,30 @@
 //
 
 import Foundation
+import ObjectMapper
 
-public class User: NSObject {
+class User: Mappable {
 
-   public var email: String?
-   public var login: String?
-   public var name: String?
-   public var authedCommits: NSSet?
-   public var builds: NSSet?
-   public var commits: NSSet?
-   public var pushedBranches: NSSet?
+  var email: String?
+  var login: String?
+  var name: String?
+  var authedCommits: NSSet?
+  var builds: NSSet?
+  var commits: NSSet?
+  var pushedBranches: NSSet?
 
-  init(userData: NSDictionary) {
-    super.init()
+  required init?(_ map: Map) {
+    
   }
+  
+  func mapping(map: Map) {
+  email <- map["email"]
+   login <- map["login"]
+   name <- map["name"]
+   authedCommits <- map["authedCommits"]
+   builds <- map["builds"]
+   commits <- map["commits"]
+   pushedBranches <- map["pushedBranches"]
+  }
+
 }

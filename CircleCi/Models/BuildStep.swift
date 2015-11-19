@@ -7,17 +7,27 @@
 //
 
 import Foundation
+import ObjectMapper
 
 
-public class BuildStep: NSObject {
+class BuildStep: Mappable {
   
-  public var index: NSNumber
-  public var name: String
-  public var actions: NSSet?
-  public var build: Build
-  public var buildStepID: String
+   var index: NSNumber?
+   var name: String?
+   var actions: NSSet?
+   var build: Build?
+   var buildStepID: String?
   
-  init(buildStepData: NSDictionary) {
-    super.init()
+  required init?(_ map: Map) {
+    
   }
+  
+  func mapping(map: Map) {
+    index <- map["index"]
+    name <- map["name"]
+    actions <- map["actions"]
+    build <- map["build"]
+    buildStepID <- map["buildStepID"]
+  }
+
 }

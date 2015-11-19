@@ -7,21 +7,35 @@
 //
 
 import Foundation
+import ObjectMapper
 
-public class Commit: NSObject {
+class Commit: Mappable {
   
-   public var body: String?
-   public var date: NSDate?
-   public var sha1: String?
-   public var subject: String?
-   public var urlString: String?
-   public var author: User?
-   public var builds: NSSet?
-   public var committer: User?
-   public var project: Project?
-   public var triggeredBuilds: NSSet?
+ var body: String?
+ var date: NSDate?
+ var sha1: String?
+ var subject: String?
+ var urlString: String?
+ var author: User?
+ var builds: NSSet?
+ var committer: User?
+ var project: Project?
+ var triggeredBuilds: NSSet?
   
-  init(commitData: NSDictionary) {
-    super.init()
+  required init?(_ map: Map) {
+    
+  }
+  
+  func mapping(map: Map) {
+    body  <- map["body"]
+   date <- map["date"]
+   sha1 <- map["sha1"]
+   subject <- map["subject"]
+   urlString <- map["urlString"]
+   author <- map["author"]
+   builds <- map["builds"]
+   committer <- map["committer"]
+   project <- map["project"]
+   triggeredBuilds <- map["triggeredBuilds"]
   }
 }

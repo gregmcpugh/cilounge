@@ -7,19 +7,32 @@
 //
 
 import Foundation
+import ObjectMapper
 
-public class Project: NSObject {
+class Project: Mappable {
 
-   public var parallelCount: NSNumber?
-   public var repositoryName: String?
-   public var username: String?
-   public var urlString: String?
-   public var branches: NSSet?
-   public var builds: NSSet?
-   public var commits: NSSet?
-   public var projectID: String?
-
-  init(projectData: NSDictionary) {
-    super.init()
+  var parallelCount: NSNumber?
+  var repositoryName: String?
+  var username: String?
+  var urlString: String?
+  var branches: NSSet?
+  var builds: NSSet?
+  var commits: NSSet?
+  var projectID: String?
+  
+  required init?(_ map: Map) {
+    
   }
+  
+  func mapping(map: Map) {
+    parallelCount <- map["parallelCount"]
+    repositoryName <- map["repositoryName"]
+    username <- map["username"]
+    urlString <- map["urlString"]
+    branches <- map["branches"]
+    builds <- map["builds"]
+    commits <- map["commits"]
+    projectID <- map["projectID"]
+  }
+  
 }
