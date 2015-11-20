@@ -9,5 +9,11 @@
 import UIKit
 
 class BuildCollectionViewCell: UICollectionViewCell {
-    
+  @IBOutlet weak var buildLabel: UILabel!
+  @IBOutlet weak var BuildView: UIView!
+  @IBOutlet weak var projectLabel: UILabel!
+  @IBOutlet weak var branchLabel: UILabel!
+  @IBOutlet weak var descriptionTextView: UITextView!
+  @IBOutlet weak var timeLabel: UILabel!
+  @IBOutlet weak var userLabel: UILabel!
 }
