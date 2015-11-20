@@ -7,16 +7,14 @@
 //
 
 import UIKit
+import ObjectMapper
 
 class ViewController: UIViewController {
 
-  @IBOutlet weak var textView: UITextView!
-  @IBOutlet weak var viewView: UIView!
   
   override func viewDidLoad() {
     super.viewDidLoad()
     // Do any additional setup after loading the view, typically from a nib.
-    textView.panGestureRecognizer.allowedTouchTypes = [UITouchType.Indirect.rawValue]
   }
   
   override func viewDidAppear(animated: Bool) {
@@ -54,8 +52,10 @@ class ViewController: UIViewController {
     
     let task  = NSURLSession.sharedSession().dataTaskWithRequest(request1){ data, response, error in
       if let jsonResult: NSArray = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSArray {
-        print("AsSynchronous\(jsonResult)")
-        successCallback(jsonResult)
+        
+        var builds:Array<Build> = Mapper<Build>().mapArray(jsonResult)!
+        print("AsSynchronous\(builds)")
+        successCallback(builds)
       }
       if let error = error {
         failureCallback(error)
@@ -65,6 +65,25 @@ class ViewController: UIViewController {
     task.resume()
 
   }
- 
-  
 }
+
+extension ViewController:UICollectionViewDataSource{
+  
+  func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    return 1
+  }
+  func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    let cell = collectionView.dequeueReusableCellWithReuseIdentifier("BuildCollectionViewCell", forIndexPath: indexPath)
+    return cell
+  }
+  func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    return 10
+  }
+}
+
+extension ViewController:UICollectionViewDelegate{
+  func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    
+  }
+}
+

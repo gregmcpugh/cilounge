@@ -13,24 +13,14 @@ class User: Mappable {
 
   var email: String?
   var login: String?
-  var name: String?
-  var authedCommits: NSSet?
-  var builds: NSSet?
-  var commits: NSSet?
-  var pushedBranches: NSSet?
-
+  var is_user:Bool?
   required init?(_ map: Map) {
-    
   }
   
   func mapping(map: Map) {
-  email <- map["email"]
-   login <- map["login"]
-   name <- map["name"]
-   authedCommits <- map["authedCommits"]
-   builds <- map["builds"]
-   commits <- map["commits"]
-   pushedBranches <- map["pushedBranches"]
+    email <- map["email" , nested:true]
+    login <- map["login"  , nested:true]
+    is_user <- map["is_user", nested:true]
   }
 
 }
