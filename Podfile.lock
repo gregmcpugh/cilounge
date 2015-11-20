@@ -1,10 +1,13 @@
 PODS:
   - ObjectMapper (1.0.1)
+  - SVProgressHUD (2.0-beta)
 
 DEPENDENCIES:
   - ObjectMapper (~> 1.0.1)
+  - SVProgressHUD (~> 2.0-beta)
 
 SPEC CHECKSUMS:
   ObjectMapper: 98524bac0dca46c6b3d5ee02cd410fc700ec6ce2
+  SVProgressHUD: c83337f10ed32d701c423d519059a249973c8662
 
 COCOAPODS: 0.39.0

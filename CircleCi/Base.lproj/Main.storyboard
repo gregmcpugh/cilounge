@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="9060" systemVersion="14F27" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" initialViewController="Lba-yd-Ans">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
     </dependencies>
     <scenes>
         <!--Navigation Controller-->
@@ -147,14 +148,50 @@
                             <constraint firstItem="paY-kb-4vY" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="xNQ-8W-d6X"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="YzK-Sm-LCw"/>
+                    <navigationItem key="navigationItem" id="YzK-Sm-LCw">
+                        <barButtonItem key="leftBarButtonItem" title="Refresh" id="YJm-Aq-nLj">
+                            <connections>
+                                <action selector="refreshAction:" destination="BYZ-38-t0r" id="fFi-fd-b4X"/>
+                            </connections>
+                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem title="Branch" id="PU0-yk-tP6">
+                                <connections>
+                                    <action selector="branchAction:" destination="BYZ-38-t0r" id="sVV-bm-Sdg"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Project" id="AgR-RI-3Pc">
+                                <connections>
+                                    <action selector="projectAction:" destination="BYZ-38-t0r" id="H6B-MX-Kuc"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
+                    </navigationItem>
                     <connections>
                         <outlet property="collectionView" destination="paY-kb-4vY" id="ISl-pP-7lc"/>
+                        <segue destination="vd3-UR-YFx" kind="show" id="l00-uk-FF6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-161" y="-205"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="pDM-VP-RO1">
+            <objects>
+                <viewController id="vd3-UR-YFx" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="CAa-yV-sdm"/>
+                        <viewControllerLayoutGuide type="bottom" id="ftl-lB-iev"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="PpA-Z4-Wlr">
+                        <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KHi-sk-JUQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1897" y="-205"/>
         </scene>
     </scenes>
 </document>

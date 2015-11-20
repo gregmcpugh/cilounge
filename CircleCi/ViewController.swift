@@ -11,30 +11,19 @@ import ObjectMapper
 
 class ViewController: UIViewController {
 
-  var builds:Array<Build>?
+  var buildViewModel:BuildViewModel?
+  
   @IBOutlet weak var collectionView: UICollectionView!
   override func viewDidLoad() {
     super.viewDidLoad()
     title = "CIRCLE"
-    // Do any additional setup after loading the view, typically from a nib.
+    buildViewModel = BuildViewModel()
+    buildViewModel?.delgate = self
+    
   }
   
   override func viewDidAppear(animated: Bool) {
-    
-    let path = "https://circleci.com/api/v1/recent-builds?circle-token=af5180393c26adc087340e9bc5fb2d96405ef289&limit=50&offset=5"
-
-    getRecentBuildsAcrossAllProjects(path, successCallback: { (response) -> () in
-      print(response)
-      if let res = (response as? NSArray) {
-        print("AsSynchronous\(res)")
-        dispatch_async(dispatch_get_main_queue()){
-          self.collectionView.reloadData()
-          }
-      }
-      }) { (error) -> () in
-        print(error.localizedDescription)
-    }
-
+    buildViewModel?.getData()
   }
 
   override func didReceiveMemoryWarning() {
@@ -43,45 +32,36 @@ class ViewController: UIViewController {
   }
   
   
-  func getRecentBuildsAcrossAllProjects(path:String, successCallback:AnyObject ->() ,  failureCallback:NSError!->() ) {
-
-    let url: NSURL = NSURL(string: path)!
-    let request1: NSMutableURLRequest = NSMutableURLRequest(URL: url)
-    request1.setValue("application/json", forHTTPHeaderField: "Content-Type")
-    request1.setValue("application/json", forHTTPHeaderField: "Accept")
-
-    let queue:NSOperationQueue = NSOperationQueue()
-    
-    let task  = NSURLSession.sharedSession().dataTaskWithRequest(request1){ data, response, error in
-      if let jsonResult: NSArray = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSArray {
-        
-        self.builds = Mapper<Build>().mapArray(jsonResult)!
-        print("AsSynchronous\(self.builds)")
-        successCallback(self.builds!)
-      }
-      if let error = error {
-        failureCallback(error)
-      }
-
-    }
-    task.resume()
-
+  @IBAction func branchAction(sender: AnyObject) {
+    buildViewModel?.branchAction()
+  }
+  
+  @IBAction func projectAction(sender: AnyObject) {
+    buildViewModel?.projectAction()
+  }
+  
+  @IBAction func refreshAction(sender: AnyObject) {
+    buildViewModel?.getData()
+  }
+}
+extension ViewController:BuildViewModelProtocol{
+  func reloadCollectionView() {
+    collectionView.reloadData()
   }
 }
 
 extension ViewController:UICollectionViewDataSource{
   
   func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-    return 1
+    return buildViewModel!.numberOfSectionsInCollectionView()
   }
   func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
     
     let cell = collectionView.dequeueReusableCellWithReuseIdentifier("BuildCollectionViewCell", forIndexPath: indexPath) as! BuildCollectionViewCell
     
-    if let buildModel = builds?[indexPath.row]{
+    if let buildModel = buildViewModel?.builds?[indexPath.row]{
       if let buildNum = buildModel.build_num{
         print("buildStatus" + buildModel.status! + " number :" + String(buildNum))
-
         cell.buildLabel.text = "#\(String(buildNum))"
       }
       cell.branchLabel.text = buildModel.branch ?? ""
@@ -94,19 +74,10 @@ extension ViewController:UICollectionViewDataSource{
     return cell
   }
   func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return self.builds?.count ?? 0
-  }
-  func collectionView(collectionView: UICollectionView, didHighlightItemAtIndexPath indexPath: NSIndexPath) {
-    print("did highlight")
-  }
-  func collectionView(collectionView: UICollectionView, shouldHighlightItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-    print("should highlight")
-    
-    return true
+    return buildViewModel!.numberOfCellsInCollectionView()
   }
   
   func collectionView(collectionView: UICollectionView, didUpdateFocusInContext context: UICollectionViewFocusUpdateContext, withAnimationCoordinator coordinator: UIFocusAnimationCoordinator) {
-    print("did update focus")
     if ((context.nextFocusedView) != nil){
       coordinator.addCoordinatedAnimations({ () -> Void in
         context.nextFocusedView?.transform = CGAffineTransformMakeScale(1.1, 1.1)
@@ -124,7 +95,7 @@ extension ViewController:UICollectionViewDataSource{
 
 extension ViewController:UICollectionViewDelegate{
   func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-    print("touches are working")
+    buildViewModel?.didSelectCellAtIndexPath(indexPath)
   }
 }
 

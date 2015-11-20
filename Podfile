@@ -5,7 +5,7 @@ use_frameworks!
 
 target 'CircleCi' do
    pod 'ObjectMapper', '~> 1.0.1'
-
+   pod 'SVProgressHUD', '~> 2.0-beta'
 end
 
 target 'CircleCiTests' do

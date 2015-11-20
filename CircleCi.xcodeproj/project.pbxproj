@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3A5AD6591BFF5FAF00A9C7F2 /* UIAlertControllerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5AD6581BFF5FAF00A9C7F2 /* UIAlertControllerManager.swift */; };
+		3A5AD65C1BFF5FCA00A9C7F2 /* BuildViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5AD65B1BFF5FCA00A9C7F2 /* BuildViewModel.swift */; };
+		3A5AD6601BFF609500A9C7F2 /* CircleApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5AD65F1BFF609500A9C7F2 /* CircleApiService.swift */; };
 		5657A4061BFB536A00EBA81E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5657A4051BFB536A00EBA81E /* AppDelegate.swift */; };
 		5657A4081BFB536A00EBA81E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5657A4071BFB536A00EBA81E /* ViewController.swift */; };
 		5657A40B1BFB536A00EBA81E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5657A4091BFB536A00EBA81E /* Main.storyboard */; };
@@ -45,6 +48,9 @@
 /* Begin PBXFileReference section */
 		00C3D3ED19C37642A5B6D725 /* Pods-CircleCi.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CircleCi.release.xcconfig"; path = "Pods/Target Support Files/Pods-CircleCi/Pods-CircleCi.release.xcconfig"; sourceTree = "<group>"; };
 		014B19E0F0AD5F2E4BEBD9F4 /* Pods-CircleCi.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CircleCi.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CircleCi/Pods-CircleCi.debug.xcconfig"; sourceTree = "<group>"; };
+		3A5AD6581BFF5FAF00A9C7F2 /* UIAlertControllerManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIAlertControllerManager.swift; path = ../../Boss_iOS/iOS/Boss/Managers/UIAlertControllerManager.swift; sourceTree = "<group>"; };
+		3A5AD65B1BFF5FCA00A9C7F2 /* BuildViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BuildViewModel.swift; path = ViewModel/BuildViewModel.swift; sourceTree = "<group>"; };
+		3A5AD65F1BFF609500A9C7F2 /* CircleApiService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CircleApiService.swift; path = Services/CircleApiService.swift; sourceTree = "<group>"; };
 		5657A4021BFB536A00EBA81E /* CircleCi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CircleCi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5657A4051BFB536A00EBA81E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5657A4071BFB536A00EBA81E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -96,6 +102,38 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3A5AD6571BFF5F7200A9C7F2 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				3A5AD65B1BFF5FCA00A9C7F2 /* BuildViewModel.swift */,
+			);
+			name = ViewModel;
+			sourceTree = "<group>";
+		};
+		3A5AD65A1BFF5FB000A9C7F2 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				3A5AD6581BFF5FAF00A9C7F2 /* UIAlertControllerManager.swift */,
+			);
+			name = Manager;
+			sourceTree = "<group>";
+		};
+		3A5AD65D1BFF5FD000A9C7F2 /* view */ = {
+			isa = PBXGroup;
+			children = (
+				5657A4071BFB536A00EBA81E /* ViewController.swift */,
+			);
+			name = view;
+			sourceTree = "<group>";
+		};
+		3A5AD65E1BFF607B00A9C7F2 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				3A5AD65F1BFF609500A9C7F2 /* CircleApiService.swift */,
+			);
+			name = Networking;
+			sourceTree = "<group>";
+		};
 		5657A3F91BFB536A00EBA81E = {
 			isa = PBXGroup;
 			children = (
@@ -121,10 +159,13 @@
 		5657A4041BFB536A00EBA81E /* CircleCi */ = {
 			isa = PBXGroup;
 			children = (
+				3A5AD65E1BFF607B00A9C7F2 /* Networking */,
+				3A5AD65D1BFF5FD000A9C7F2 /* view */,
+				3A5AD65A1BFF5FB000A9C7F2 /* Manager */,
+				3A5AD6571BFF5F7200A9C7F2 /* ViewModel */,
 				5657A44A1BFF3B9200EBA81E /* Cells */,
 				5657A4301BFDE88600EBA81E /* Models */,
 				5657A4051BFB536A00EBA81E /* AppDelegate.swift */,
-				5657A4071BFB536A00EBA81E /* ViewController.swift */,
 				5657A4091BFB536A00EBA81E /* Main.storyboard */,
 				5657A40C1BFB536A00EBA81E /* Assets.xcassets */,
 				5657A40E1BFB536A00EBA81E /* Info.plist */,
@@ -375,7 +416,9 @@
 			files = (
 				5657A43F1BFDE8D800EBA81E /* Commit.swift in Sources */,
 				5657A43D1BFDE8D800EBA81E /* BuildStep.swift in Sources */,
+				3A5AD6591BFF5FAF00A9C7F2 /* UIAlertControllerManager.swift in Sources */,
 				5657A4411BFDE8D800EBA81E /* Project.swift in Sources */,
+				3A5AD6601BFF609500A9C7F2 /* CircleApiService.swift in Sources */,
 				5657A4401BFDE8D800EBA81E /* Node.swift in Sources */,
 				5657A4081BFB536A00EBA81E /* ViewController.swift in Sources */,
 				5657A43A1BFDE8D800EBA81E /* Branch.swift in Sources */,
@@ -383,6 +426,7 @@
 				5657A44C1BFF3BB600EBA81E /* BuildCollectionViewCell.swift in Sources */,
 				5657A43C1BFDE8D800EBA81E /* BuildAction.swift in Sources */,
 				5657A4061BFB536A00EBA81E /* AppDelegate.swift in Sources */,
+				3A5AD65C1BFF5FCA00A9C7F2 /* BuildViewModel.swift in Sources */,
 				5657A4421BFDE8D800EBA81E /* User.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
