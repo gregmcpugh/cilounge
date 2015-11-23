@@ -12,6 +12,8 @@ import ObjectMapper
 class ViewController: UIViewController {
 
   var buildViewModel:BuildViewModel?
+  var branchBarButton: UIBarButtonItem!
+  var projectBarButton: UIBarButtonItem!
   
   @IBOutlet weak var collectionView: UICollectionView!
   override func viewDidLoad() {
@@ -20,6 +22,11 @@ class ViewController: UIViewController {
     buildViewModel = BuildViewModel()
     buildViewModel?.delgate = self
     
+    branchBarButton = UIBarButtonItem(title: "Branch", style: UIBarButtonItemStyle.Plain, target: self, action: "branchAction")
+    
+    projectBarButton = UIBarButtonItem(title: "Project", style: UIBarButtonItemStyle.Plain, target: self, action: "projectAction")
+
+    self.navigationItem.rightBarButtonItems  = [branchBarButton, projectBarButton]
   }
   
   override func viewDidAppear(animated: Bool) {
@@ -28,15 +35,15 @@ class ViewController: UIViewController {
 
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
-    // Dispose of any resources that can be recreated.
+
   }
   
   
-  @IBAction func branchAction(sender: AnyObject) {
+  func branchAction() {
     buildViewModel?.branchAction()
   }
   
-  @IBAction func projectAction(sender: AnyObject) {
+  func projectAction() {
     buildViewModel?.projectAction()
   }
   
@@ -47,6 +54,15 @@ class ViewController: UIViewController {
 extension ViewController:BuildViewModelProtocol{
   func reloadCollectionView() {
     collectionView.reloadData()
+  }
+  
+  func reloadButtons(projectName: String, branchName: String) {
+    self.navigationItem.rightBarButtonItem = nil
+    branchBarButton = UIBarButtonItem(title: branchName, style: UIBarButtonItemStyle.Plain, target: self, action: "branchAction")
+    
+    projectBarButton = UIBarButtonItem(title:  projectName, style: UIBarButtonItemStyle.Plain, target: self, action: "projectAction")
+    
+    self.navigationItem.rightBarButtonItems  = [branchBarButton, projectBarButton]
   }
 }
 
@@ -70,21 +86,13 @@ extension ViewController:UICollectionViewDataSource{
       cell.descriptionTextView.text = buildModel.subject ?? ""
       cell.BuildView.backgroundColor = buildModel.statusColour()
 
-//      cell.layer.cornerRadius = 6
-      
       cell.contentView.layer.cornerRadius = 6.0
       cell.contentView.layer.borderWidth = 1.0
-//      cell.contentView.layer.borderColor = CGC .clearColor()
       cell.contentView.layer.masksToBounds = true
-      
-//      cell.layer.shadowColor = [UIColor CGColor]
       cell.layer.shadowOffset = CGSizeMake(0, 2.0)
       cell.layer.shadowRadius = 2.0
       cell.layer.shadowOpacity = 1.0
       cell.layer.masksToBounds = false
-//      cell.layer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:cell.bounds cornerRadius:cell.contentView.layer.cornerRadius].CGPath;
-      
-      
       
     }
     return cell

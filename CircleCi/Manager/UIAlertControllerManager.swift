@@ -27,6 +27,38 @@ class UIAlertControllerManager: NSObject {
     presentAlertView(alertView)
   }
 
+  func showAlertList(title: String?, message: String?, cancelButtonTitle: String?, cancelButtonAction:(() -> Void)?, otherButtonTitles: [String]?,  indexActionHandler: ((AnyObject) -> Void)){
+    let alertView = createListAlertView(title, message: message, cancelButtonTitle: cancelButtonTitle, cancelButtonAction: cancelButtonAction, otherButtonTitles: otherButtonTitles, indexActionHandler: indexActionHandler)
+    presentAlertView(alertView)
+  }
+  
+  func createListAlertView(title: String?, message: String?, cancelButtonTitle: String?, cancelButtonAction:(() -> Void)?, otherButtonTitles: [String]?,  indexActionHandler: ((AnyObject) -> Void)) -> UIAlertController {
+    let alert = UIAlertController(
+      title: title,
+      message: message,
+      preferredStyle: .Alert
+    )
+    
+    let closure = { (index: Int) in
+      { (action: UIAlertAction!) -> Void in
+        indexActionHandler(index)
+      }
+    }
+
+
+    if let otherButtonTitles = otherButtonTitles {
+      for (index, otherButtonTitle) in otherButtonTitles.enumerate() {
+        alert.addAction(UIAlertAction(title: otherButtonTitle, style: .Default, handler: closure(index)))
+      }
+    }
+    
+    let action = createUIAlertAction(cancelButtonTitle, style: .Default, handler: cancelButtonAction)
+    alert.addAction(action)
+    return alert
+  }
+  
+
+
   func createTextAlertView(title: String?, message: String?, cancelButtonTitle: String?, cancelButtonAction:(() -> Void)?, otherButtonTitles: [String]?,  otherButtonActions: [(() -> Void)?]?) -> UIAlertController {
     let alertController = createAlertView(title, message: message, cancelButtonTitle: cancelButtonTitle, cancelButtonAction: cancelButtonAction, otherButtonTitles: otherButtonTitles, otherButtonActions: otherButtonActions)
     alertController.addTextFieldWithConfigurationHandler(configurationTextField)
@@ -57,7 +89,6 @@ class UIAlertControllerManager: NSObject {
     
     let action = createUIAlertAction(cancelButtonTitle, style: .Default, handler: cancelButtonAction)
     alert.addAction(action)
-
     return alert
   }
   

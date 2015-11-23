@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="9059" systemVersion="14F27" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" initialViewController="Lba-yd-Ans">
+<document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="9060" systemVersion="14F27" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" initialViewController="Lba-yd-Ans">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
-        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
     </dependencies>
     <scenes>
         <!--Navigation Controller-->
@@ -154,18 +153,6 @@
                                 <action selector="refreshAction:" destination="BYZ-38-t0r" id="fFi-fd-b4X"/>
                             </connections>
                         </barButtonItem>
-                        <rightBarButtonItems>
-                            <barButtonItem title="Branch" id="PU0-yk-tP6">
-                                <connections>
-                                    <action selector="branchAction:" destination="BYZ-38-t0r" id="sVV-bm-Sdg"/>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem title="Project" id="AgR-RI-3Pc">
-                                <connections>
-                                    <action selector="projectAction:" destination="BYZ-38-t0r" id="H6B-MX-Kuc"/>
-                                </connections>
-                            </barButtonItem>
-                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="collectionView" destination="paY-kb-4vY" id="ISl-pP-7lc"/>

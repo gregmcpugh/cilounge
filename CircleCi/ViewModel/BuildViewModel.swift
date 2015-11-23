@@ -11,11 +11,14 @@ import UIKit
 import SVProgressHUD
 protocol BuildViewModelProtocol:class{
   func reloadCollectionView()
+  func reloadButtons(projectName:String, branchName:String)
 }
 
 class BuildViewModel{
   var projects:[Project]?
   var selectedProject:Project?
+  var selectedBranchName:String?
+  
   lazy var alertViewManager: UIAlertControllerManager = {
     UIAlertControllerManager()
   }()
@@ -51,12 +54,26 @@ class BuildViewModel{
   }
   
   func branchAction(){
-    
-    alertViewManager.showAlertView("Branch Selection", message: "Please Select branch", cancelButtonTitle: "Cancel", cancelButtonAction: nil, otherButtonTitles:["branch"], otherButtonActions: nil)
+    if let selectedProject = selectedProject{
+      alertViewManager.showAlertList("Branch Selection", message: "Please Select branch", cancelButtonTitle: "Cancel", cancelButtonAction: nil, otherButtonTitles:  selectedProject.getBrancheNames(), indexActionHandler: { index in
+        let id = index as! Int
+        var branches = self.selectedProject?.getBrancheNames()
+        self.selectedBranchName = branches![id] as String
+        self.delgate?.reloadButtons( self.selectedProject?.reponame ?? "Project", branchName: self.selectedBranchName ?? "Branch")
+      })
+    }
+    else{
+      alertViewManager.showAlertView("No project selected", message: "please select project first before branch", cancelButtonTitle: "Cancel", cancelButtonAction: nil, otherButtonTitles: nil, otherButtonActions: nil)
+      }
   }
   
+  
   func projectAction(){
-    alertViewManager.showAlertView("Project Selection", message: "Please Select Project", cancelButtonTitle: "Cancel", cancelButtonAction: nil, otherButtonTitles:getProjectsNames(), otherButtonActions: nil)
+
+    alertViewManager.showAlertList("Branch Selection", message: "Please Select Project", cancelButtonTitle: "Cancel", cancelButtonAction: nil, otherButtonTitles:getProjectsNames(), indexActionHandler: { index in
+        let id = index as! Int
+        self.selectedProject = self.projects?[id]
+        self.delgate?.reloadButtons( self.selectedProject?.reponame ?? "Project", branchName: self.selectedBranchName ?? "Branch")    })
 
   }
   
