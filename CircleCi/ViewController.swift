@@ -69,6 +69,22 @@ extension ViewController:UICollectionViewDataSource{
       cell.userLabel.text = buildModel.author_name ?? ""
       cell.descriptionTextView.text = buildModel.subject ?? ""
       cell.BuildView.backgroundColor = buildModel.statusColour()
+
+//      cell.layer.cornerRadius = 6
+      
+      cell.contentView.layer.cornerRadius = 6.0
+      cell.contentView.layer.borderWidth = 1.0
+//      cell.contentView.layer.borderColor = CGC .clearColor()
+      cell.contentView.layer.masksToBounds = true
+      
+//      cell.layer.shadowColor = [UIColor CGColor]
+      cell.layer.shadowOffset = CGSizeMake(0, 2.0)
+      cell.layer.shadowRadius = 2.0
+      cell.layer.shadowOpacity = 1.0
+      cell.layer.masksToBounds = false
+//      cell.layer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:cell.bounds cornerRadius:cell.contentView.layer.cornerRadius].CGPath;
+      
+      
       
     }
     return cell
