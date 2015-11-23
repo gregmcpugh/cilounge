@@ -52,7 +52,7 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="450" height="450"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9rz-GA-YrK">
-                                                            <rect key="frame" x="5" y="10" width="440" height="48"/>
+                                                            <rect key="frame" x="5" y="10" width="335" height="48"/>
                                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="40"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
@@ -89,6 +89,16 @@
                                                             <fontDescription key="fontDescription" type="system" weight="light" pointSize="27"/>
                                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                         </textView>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9su-T6-4Kf">
+                                                            <rect key="frame" x="345" y="5" width="100" height="55"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="55" id="huq-fw-TNG"/>
+                                                                <constraint firstAttribute="width" constant="100" id="xp0-RW-Xaa"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="23"/>
+                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
                                                     </subviews>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
@@ -109,8 +119,10 @@
                                                         <constraint firstItem="9rz-GA-YrK" firstAttribute="leading" secondItem="xWo-ah-2aU" secondAttribute="leading" constant="5" id="Xnm-ha-E0r"/>
                                                         <constraint firstItem="b9l-tv-UGd" firstAttribute="top" secondItem="F0N-C5-7xz" secondAttribute="bottom" constant="20" id="d0E-DL-FKO"/>
                                                         <constraint firstItem="gTk-nl-daL" firstAttribute="top" secondItem="9rz-GA-YrK" secondAttribute="bottom" constant="8" id="dRm-RT-h8J"/>
-                                                        <constraint firstAttribute="trailing" secondItem="9rz-GA-YrK" secondAttribute="trailing" constant="5" id="ugW-qW-CWR"/>
+                                                        <constraint firstItem="9su-T6-4Kf" firstAttribute="top" secondItem="xWo-ah-2aU" secondAttribute="top" constant="5" id="t9D-gw-JzO"/>
+                                                        <constraint firstAttribute="trailing" secondItem="9su-T6-4Kf" secondAttribute="trailing" constant="5" id="tga-j2-4zP"/>
                                                         <constraint firstItem="b9l-tv-UGd" firstAttribute="width" secondItem="yZ1-m3-3mW" secondAttribute="width" id="yHn-g5-CJC"/>
+                                                        <constraint firstItem="9su-T6-4Kf" firstAttribute="leading" secondItem="9rz-GA-YrK" secondAttribute="trailing" constant="5" id="zzg-xw-NW9"/>
                                                     </constraints>
                                                 </view>
                                             </subviews>
@@ -128,6 +140,7 @@
                                             <outlet property="buildLabel" destination="9rz-GA-YrK" id="LP0-Vr-1Td"/>
                                             <outlet property="descriptionTextView" destination="F0N-C5-7xz" id="4CV-Lh-1TA"/>
                                             <outlet property="projectLabel" destination="gTk-nl-daL" id="Xgu-xf-dRh"/>
+                                            <outlet property="statusLabel" destination="9su-T6-4Kf" id="zX2-og-KZm"/>
                                             <outlet property="timeLabel" destination="b9l-tv-UGd" id="1Tc-14-eT6"/>
                                             <outlet property="userLabel" destination="yZ1-m3-3mW" id="dzd-6a-49E"/>
                                         </connections>

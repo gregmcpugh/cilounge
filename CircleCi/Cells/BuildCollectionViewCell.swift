@@ -16,4 +16,5 @@ class BuildCollectionViewCell: UICollectionViewCell {
   @IBOutlet weak var descriptionTextView: UITextView!
   @IBOutlet weak var timeLabel: UILabel!
   @IBOutlet weak var userLabel: UILabel!
+  @IBOutlet weak var statusLabel: UILabel!
 }

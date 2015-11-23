@@ -14,11 +14,16 @@ let BASE_URL = "https://circleci.com/api/v1/"
 
 enum CircleAPI {
   case RecenBuilds
+  case RecentBuildProject(String)
+  case RecentBuildBranch(String, String)
   case CancelBuild(String, String, String)
   case Projects
   var path : String {
     switch self {
+      
     case RecenBuilds:                                        return BASE_URL + "recent-builds?circle-token=" + token
+    case RecentBuildProject(let project):                    return BASE_URL + "recent-builds?circle-token=" + token
+    case RecentBuildBranch(let project, let branch):          return BASE_URL + "recent-builds?circle-token=" + token
     case CancelBuild(let project, let user,let buildNumber): return BASE_URL + "project/" + user + "/" + project + "/" + buildNumber + "/cancel?circle-token="  + token
     case Projects:                                           return BASE_URL + "projects?circle-token=" + token
     }

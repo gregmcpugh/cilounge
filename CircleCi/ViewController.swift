@@ -85,7 +85,7 @@ extension ViewController:UICollectionViewDataSource{
       cell.userLabel.text = buildModel.author_name ?? ""
       cell.descriptionTextView.text = buildModel.subject ?? ""
       cell.BuildView.backgroundColor = buildModel.statusColour()
-
+      cell.statusLabel.text = buildModel.status ?? ""
       cell.contentView.layer.cornerRadius = 6.0
       cell.contentView.layer.borderWidth = 1.0
       cell.contentView.layer.masksToBounds = true

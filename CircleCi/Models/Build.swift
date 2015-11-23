@@ -58,21 +58,21 @@ class Build: Mappable {
     if let switchStatus = status{
       switch switchStatus {
       case "running":
-        return UIColor.blueColor()
+        return  UIColor(red: (55/255), green: (127/255), blue: (192/255), alpha: 1)
       case "success":
-        return  UIColor(red: (3/255), green: (105/255), blue: (26/255), alpha: 1)
+        return  UIColor(red: (57/255), green: (139/255), blue: (0/255), alpha: 1)
       case "canceled":
-        return  UIColor(red: (143/255), green: (5/255), blue: (0/255), alpha: 1)
+        return  UIColor(red: (119/255), green: (119/255), blue: (119/255), alpha: 1)
       case "failed":
-        return  UIColor(red: (143/255), green: (5/255), blue: (0/255), alpha: 1)
+        return  UIColor(red: (161/255), green: (44/255), blue: (40/255), alpha: 1)
       case "skipped":
-        return UIColor.orangeColor()
+        return  UIColor(red: (205/255), green: (76/255), blue: (0/255), alpha: 1)
       case "timedOut":
-        return  UIColor(red: (143/255), green: (5/255), blue: (0/255), alpha: 1)
+        return  UIColor(red: (161/255), green: (44/255), blue: (40/255), alpha: 1)
       case "fixed":
-        return  UIColor(red: (3/255), green: (105/255), blue: (26/255), alpha: 1)
+        return  UIColor(red: (57/255), green: (139/255), blue: (0/255), alpha: 1)
       case "not_run":
-        return UIColor.darkGrayColor()
+        return  UIColor(red: (119/255), green: (119/255), blue: (119/255), alpha: 1)
       default:
         return UIColor.blackColor()
       }

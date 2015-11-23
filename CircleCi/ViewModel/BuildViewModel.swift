@@ -55,7 +55,11 @@ class BuildViewModel{
   
   func branchAction(){
     if let selectedProject = selectedProject{
-      alertViewManager.showAlertList("Branch Selection", message: "Please Select branch", cancelButtonTitle: "Cancel", cancelButtonAction: nil, otherButtonTitles:  selectedProject.getBrancheNames(), indexActionHandler: { index in
+      alertViewManager.showAlertList("Branch Selection", message: "Please Select branch", cancelButtonTitle: "Cancel", cancelButtonAction:{ () -> Void in
+        self.selectedProject = nil
+        self.selectedBranchName = nil
+        self.delgate?.reloadButtons( "Project", branchName:"Branch")
+        }, otherButtonTitles:  selectedProject.getBrancheNames(), indexActionHandler: { index in
         let id = index as! Int
         var branches = self.selectedProject?.getBrancheNames()
         self.selectedBranchName = branches![id] as String
@@ -70,7 +74,11 @@ class BuildViewModel{
   
   func projectAction(){
 
-    alertViewManager.showAlertList("Branch Selection", message: "Please Select Project", cancelButtonTitle: "Cancel", cancelButtonAction: nil, otherButtonTitles:getProjectsNames(), indexActionHandler: { index in
+    alertViewManager.showAlertList("Branch Selection", message: "Please Select Project", cancelButtonTitle: "Cancel", cancelButtonAction: { () -> Void in
+      self.selectedProject = nil
+      self.selectedBranchName = nil
+      self.delgate?.reloadButtons( "Project", branchName:"Branch")
+      }, otherButtonTitles:getProjectsNames(), indexActionHandler: { index in
         let id = index as! Int
         self.selectedProject = self.projects?[id]
         self.delgate?.reloadButtons( self.selectedProject?.reponame ?? "Project", branchName: self.selectedBranchName ?? "Branch")    })
