@@ -10,29 +10,21 @@ import Foundation
 import ObjectMapper
 
 class Project: Mappable {
-
-  var parallelCount: NSNumber?
-  var repositoryName: String?
-  var username: String?
-  var urlString: String?
-  var branches: NSSet?
-  var builds: NSSet?
-  var commits: NSSet?
-  var projectID: String?
-  
+  var username:String?
+  var branches:NSDictionary?
+  var reponame:String?
+  init(dic:NSDictionary){ 
+  }
   required init?(_ map: Map) {
-    
   }
   
   func mapping(map: Map) {
-    parallelCount <- map["parallelCount"]
-    repositoryName <- map["repositoryName"]
     username <- map["username"]
-    urlString <- map["urlString"]
     branches <- map["branches"]
-    builds <- map["builds"]
-    commits <- map["commits"]
-    projectID <- map["projectID"]
+    reponame <- map["reponame"]
   }
   
+  func getBrancheNames()->[String]{
+    return branches?.allKeys as! [String]
+  }
 }

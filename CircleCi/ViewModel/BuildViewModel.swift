@@ -14,7 +14,8 @@ protocol BuildViewModelProtocol:class{
 }
 
 class BuildViewModel{
-  
+  var projects:[Project]?
+  var selectedProject:Project?
   lazy var alertViewManager: UIAlertControllerManager = {
     UIAlertControllerManager()
   }()
@@ -23,7 +24,7 @@ class BuildViewModel{
 
   func getData(){
     SVProgressHUD.showInfoWithStatus("LOADING JUST WAIT!!")
-    getRecentBuildsAcrossAllProjects(path, successCallback: { (response) -> () in
+    getRecentBuildsAcrossAllProjects({ (response) -> () in
       SVProgressHUD.showSuccessWithStatus("OK ITS Finished")
       if let res = (response as? NSArray) {
         self.builds = res as? Array<Build>
@@ -33,8 +34,12 @@ class BuildViewModel{
       }
       }) { (error) -> () in
         SVProgressHUD.showErrorWithStatus(error.localizedDescription)
-
     }
+    getProjects({response -> () in
+      self.projects = response as! [Project]
+      }) { error -> () in
+    }
+
   }
   
   func numberOfSectionsInCollectionView()->Int{
@@ -46,11 +51,12 @@ class BuildViewModel{
   }
   
   func branchAction(){
+    
     alertViewManager.showAlertView("Branch Selection", message: "Please Select branch", cancelButtonTitle: "Cancel", cancelButtonAction: nil, otherButtonTitles:["branch"], otherButtonActions: nil)
   }
   
   func projectAction(){
-    alertViewManager.showAlertView("Project Selection", message: "Please Select Project", cancelButtonTitle: "Cancel", cancelButtonAction: nil, otherButtonTitles:["Project"], otherButtonActions: nil)
+    alertViewManager.showAlertView("Project Selection", message: "Please Select Project", cancelButtonTitle: "Cancel", cancelButtonAction: nil, otherButtonTitles:getProjectsNames(), otherButtonActions: nil)
 
   }
   
@@ -62,4 +68,11 @@ class BuildViewModel{
 
   }
   
+  func getProjectsNames()->[String]{
+    var strArray = [String]()
+    for projct in projects!{
+      strArray.append(projct.reponame!)
+    }
+    return strArray
+  }
 }

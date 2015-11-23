@@ -11,21 +11,13 @@ import ObjectMapper
 
 class Branch: Mappable {
 
-   var name: String?
-   var builds: NSSet?
-   var branchID: NSString?
-   var project: Project?
-   var pushers: NSSet?
+  var name: String?
   
   required init?(_ map: Map) {
     
   }
   
   func mapping(map: Map) {
-    name        <- map["name"]
-    builds      <- map["builds"]
-    branchID    <- map["branchID"]
-    project     <- map["project"]
-    pushers     <- map["pushers"]
+
   }
 }
