@@ -86,6 +86,7 @@ extension ViewController:UICollectionViewDataSource{
       cell.descriptionTextView.text = buildModel.subject ?? ""
       cell.BuildView.backgroundColor = buildModel.statusColour()
       cell.statusLabel.text = buildModel.status ?? ""
+      cell.timeLabel.text = buildModel.getTimeTaken()
       cell.contentView.layer.cornerRadius = 6.0
       cell.contentView.layer.borderWidth = 1.0
       cell.contentView.layer.masksToBounds = true

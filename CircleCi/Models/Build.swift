@@ -23,7 +23,7 @@ class Build: Mappable {
   var queuedAt: NSDate?
   var startedAt: NSDate?
   var status: String?
-  var build_time_millis: NSNumber?
+  var build_time_millis: Int?
   var branch:String?
   var lifecycle:String?
   var author_name:String?
@@ -47,7 +47,7 @@ class Build: Mappable {
     subject <- map["subject"]
     why <- map["why"]
     build_url <- map["build_url"]
-    build_time_millis <- map["build_time_milliss"]
+    build_time_millis <- map["build_time_millis"]
     user <- map["user"]
     subject <- map["subject"]
     status <- map["status"]
@@ -78,5 +78,34 @@ class Build: Mappable {
       }
     }
     return UIColor.blackColor()
+  }
+  
+  func getTimeTaken() -> String {
+    if let buildTime = build_time_millis {
+      return buildTime.msToSeconds.minuteSecondMS
+    }
+    return "?"
+  }
+
+}
+
+extension NSTimeInterval {
+  var minuteSecondMS: String {
+    return String(format:"%d:%02d.%03d", minute , second, millisecond  )
+  }
+  var minute: Int {
+    return Int((self/60.0)%60)
+  }
+  var second: Int {
+    return Int(self % 60)
+  }
+  var millisecond: Int {
+    return Int(self*1000 % 1000 )
+  }
+}
+
+extension Int {
+  var msToSeconds: Double {
+    return Double(self) / 1000
   }
 }
