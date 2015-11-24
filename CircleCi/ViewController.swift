@@ -15,18 +15,32 @@ class ViewController: UIViewController {
   var branchBarButton: UIBarButtonItem!
   var projectBarButton: UIBarButtonItem!
   
+  let refreshWaitTime = 30
+  var currentRefreshTime = 0
+  var timer:NSTimer?
+  
+  @IBOutlet weak var refreshButton: UIButton!
+  
   @IBOutlet weak var collectionView: UICollectionView!
   override func viewDidLoad() {
     super.viewDidLoad()
     title = "CIRCLE"
     buildViewModel = BuildViewModel()
     buildViewModel?.delgate = self
-    
     branchBarButton = UIBarButtonItem(title: "Branch", style: UIBarButtonItemStyle.Plain, target: self, action: "branchAction")
-    
     projectBarButton = UIBarButtonItem(title: "Project", style: UIBarButtonItemStyle.Plain, target: self, action: "projectAction")
-
     self.navigationItem.rightBarButtonItems  = [branchBarButton, projectBarButton]
+  }
+  
+  func update(){
+    currentRefreshTime++
+    
+    refreshButton.setTitle( "Reloading in \(refreshWaitTime - currentRefreshTime)", forState: UIControlState.Normal)
+    
+    if currentRefreshTime == refreshWaitTime{
+      currentRefreshTime = 0
+      buildViewModel?.getData()
+    }
   }
   
   override func viewDidAppear(animated: Bool) {
@@ -35,9 +49,7 @@ class ViewController: UIViewController {
 
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
-
   }
-  
   
   func branchAction() {
     buildViewModel?.branchAction()
@@ -48,20 +60,22 @@ class ViewController: UIViewController {
   }
   
   @IBAction func refreshAction(sender: AnyObject) {
+    currentRefreshTime = 0
     buildViewModel?.getData()
   }
 }
+
 extension ViewController:BuildViewModelProtocol{
   func reloadCollectionView() {
+    timer?.invalidate()
+    timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("update"), userInfo: nil, repeats: true);
     collectionView.reloadData()
   }
   
   func reloadButtons(projectName: String, branchName: String) {
     self.navigationItem.rightBarButtonItem = nil
     branchBarButton = UIBarButtonItem(title: branchName, style: UIBarButtonItemStyle.Plain, target: self, action: "branchAction")
-    
     projectBarButton = UIBarButtonItem(title:  projectName, style: UIBarButtonItemStyle.Plain, target: self, action: "projectAction")
-    
     self.navigationItem.rightBarButtonItems  = [branchBarButton, projectBarButton]
   }
 }

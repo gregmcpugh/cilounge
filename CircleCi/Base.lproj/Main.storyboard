@@ -33,7 +33,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="paY-kb-4vY">
-                                <rect key="frame" x="0.0" y="145" width="1920" height="935"/>
+                                <rect key="frame" x="0.0" y="200" width="1920" height="880"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="30" minimumInteritemSpacing="5" id="pzf-X2-x7X">
                                     <size key="itemSize" width="450" height="450"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -151,24 +151,42 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="k0F-fI-QD3"/>
                                 </connections>
                             </collectionView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tx5-4x-TRp">
+                                <rect key="frame" x="0.0" y="145" width="1920" height="55"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mLh-uF-x9t">
+                                        <rect key="frame" x="0.0" y="0.0" width="1920" height="55"/>
+                                        <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
+                                        <state key="normal" title="Button"/>
+                                        <connections>
+                                            <action selector="refreshAction:" destination="BYZ-38-t0r" eventType="primaryActionTriggered" id="Mrm-Ve-tqw"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="mLh-uF-x9t" secondAttribute="bottom" id="5Wz-88-h9a"/>
+                                    <constraint firstItem="mLh-uF-x9t" firstAttribute="top" secondItem="Tx5-4x-TRp" secondAttribute="top" id="6FF-aS-6RR"/>
+                                    <constraint firstAttribute="trailing" secondItem="mLh-uF-x9t" secondAttribute="trailing" id="GAK-jm-oft"/>
+                                    <constraint firstItem="mLh-uF-x9t" firstAttribute="leading" secondItem="Tx5-4x-TRp" secondAttribute="leading" id="UyD-o9-UoF"/>
+                                    <constraint firstAttribute="height" constant="55" id="eYg-jo-LKB"/>
+                                </constraints>
+                            </view>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="paY-kb-4vY" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="1RO-AE-kji"/>
+                            <constraint firstAttribute="trailing" secondItem="Tx5-4x-TRp" secondAttribute="trailing" id="Irs-Es-Sh5"/>
+                            <constraint firstItem="paY-kb-4vY" firstAttribute="top" secondItem="Tx5-4x-TRp" secondAttribute="bottom" id="UJA-gq-8up"/>
+                            <constraint firstItem="Tx5-4x-TRp" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="UeA-xe-DwU"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="paY-kb-4vY" secondAttribute="bottom" id="WjO-rd-yho"/>
+                            <constraint firstItem="Tx5-4x-TRp" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="ea9-uj-3gy"/>
                             <constraint firstAttribute="trailing" secondItem="paY-kb-4vY" secondAttribute="trailing" id="tQ3-rS-XE9"/>
-                            <constraint firstItem="paY-kb-4vY" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="xNQ-8W-d6X"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="YzK-Sm-LCw">
-                        <barButtonItem key="leftBarButtonItem" title="Refresh" id="YJm-Aq-nLj">
-                            <connections>
-                                <action selector="refreshAction:" destination="BYZ-38-t0r" id="fFi-fd-b4X"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="YzK-Sm-LCw"/>
                     <connections>
                         <outlet property="collectionView" destination="paY-kb-4vY" id="ISl-pP-7lc"/>
+                        <outlet property="refreshButton" destination="mLh-uF-x9t" id="uZe-lJ-QpY"/>
                         <segue destination="vd3-UR-YFx" kind="show" id="l00-uk-FF6"/>
                     </connections>
                 </viewController>

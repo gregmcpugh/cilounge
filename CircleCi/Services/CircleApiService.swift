@@ -22,8 +22,8 @@ enum CircleAPI {
     switch self {
     case RecenBuilds:                                        return BASE_URL + "recent-builds?circle-token=" + token
     case RecentBuildProject(let user, let project):                    return BASE_URL + "project/" + user + "/" + project + "?circle-token=" + token
-    case RecentBuildBranch(let project,let user, let branch):          return BASE_URL + "project/" + user + "/" + project  + "/tree/" + branch + "?circle-token=" + token
-    case CancelBuild(let project, let user,let buildNumber): return BASE_URL + "project/" + user + "/" + project + "/" + buildNumber + "/cancel?circle-token="  + token
+    case RecentBuildBranch(let user,let project, let branch):          return BASE_URL + "project/" + user + "/" + project  + "/tree/" + branch + "?circle-token=" + token
+    case CancelBuild(let user, let project,let buildNumber): return BASE_URL + "project/" + user + "/" + project + "/" + buildNumber + "/cancel?circle-token="  + token
     case Projects:                                           return BASE_URL + "projects?circle-token=" + token
     }
   }
@@ -72,6 +72,10 @@ func getProjects(successCallback:AnyObject ->() ,  failureCallback:NSError!->() 
     }
   }
   task.resume()
+}
+
+func rebuild(build:Build, successCallback:AnyObject ->() ,  failureCallback:NSError!->() ){
+  
 }
 
 func cancelBuild(build:Build, successCallback:AnyObject ->() ,  failureCallback:NSError!->() ){
