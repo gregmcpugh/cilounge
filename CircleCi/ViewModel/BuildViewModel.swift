@@ -92,7 +92,7 @@ class BuildViewModel{
   
   func didSelectCellAtIndexPath(indexPath:NSIndexPath){
     selectedBuild = builds?[indexPath.row]
-    alertViewManager.showAlertView("TAKE CONTROL!!!!", message: "You have the power", cancelButtonTitle: "Cancel", cancelButtonAction: nil, otherButtonTitles:["Cancel","Rebuild"], otherButtonActions:[ cancelAction,rebuildAction])
+    alertViewManager.showAlertView("TAKE CONTROL!!!!", message: "You have the power", cancelButtonTitle: "Cancel", cancelButtonAction: nil, otherButtonTitles:["STOP THE BUILD","Rebuild"], otherButtonActions:[ cancelAction,rebuildAction])
   }
   
   func cancelAction(){
