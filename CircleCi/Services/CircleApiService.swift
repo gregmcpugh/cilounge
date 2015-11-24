@@ -17,6 +17,7 @@ enum CircleAPI {
   case RecentBuildProject(String,String)
   case RecentBuildBranch(String, String, String)
   case CancelBuild(String, String, String)
+  case RetryBuild(String, String, String)
   case Projects
   var path : String {
     switch self {
@@ -24,6 +25,7 @@ enum CircleAPI {
     case RecentBuildProject(let user, let project):                    return BASE_URL + "project/" + user + "/" + project + "?circle-token=" + token
     case RecentBuildBranch(let user,let project, let branch):          return BASE_URL + "project/" + user + "/" + project  + "/tree/" + branch + "?circle-token=" + token
     case CancelBuild(let user, let project,let buildNumber): return BASE_URL + "project/" + user + "/" + project + "/" + buildNumber + "/cancel?circle-token="  + token
+    case RetryBuild(let user, let project,let buildNumber): return BASE_URL + "project/" + user + "/" + project + "/" + buildNumber + "/retry?circle-token="  + token
     case Projects:                                           return BASE_URL + "projects?circle-token=" + token
     }
   }
@@ -34,10 +36,10 @@ func getBuildForProjects(userName:String?, projectName:String?, branch:String? ,
   
   var url: NSURL = NSURL(string: CircleAPI.RecenBuilds.path)!
   if let userName = userName , projectName = projectName, branch = branch{
-     url  = NSURL(string: CircleAPI.RecentBuildBranch(userName, projectName, branch).path)!
+    url  = NSURL(string: CircleAPI.RecentBuildBranch(userName, projectName, branch).path)!
   }
   else if let userName = userName , projectName = projectName {
-     url  = NSURL(string: CircleAPI.RecentBuildProject(userName, projectName).path)!
+    url  = NSURL(string: CircleAPI.RecentBuildProject(userName, projectName).path)!
   }
   
   let request1: NSMutableURLRequest = NSMutableURLRequest(URL: url)
@@ -53,7 +55,7 @@ func getBuildForProjects(userName:String?, projectName:String?, branch:String? ,
     }
   }
   task.resume()
-
+  
 }
 
 func getProjects(successCallback:AnyObject ->() ,  failureCallback:NSError!->() ){
@@ -74,11 +76,59 @@ func getProjects(successCallback:AnyObject ->() ,  failureCallback:NSError!->() 
   task.resume()
 }
 
-func rebuild(build:Build, successCallback:AnyObject ->() ,  failureCallback:NSError!->() ){
-  
+func cancelBuild(build:Build, successCallback:Void ->() ,  failureCallback:NSError!->() ){
+  if let username = build.username, reponame = build.reponame, buildNum = build.build_num{
+    let url: NSURL = NSURL(string: CircleAPI.CancelBuild(username, reponame, buildNum.stringValue).path)!
+    let request1: NSMutableURLRequest = NSMutableURLRequest(URL: url)
+    request1.HTTPMethod = "POST"
+    request1.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    request1.setValue("application/json", forHTTPHeaderField: "Accept")
+    let task  = NSURLSession.sharedSession().dataTaskWithRequest(request1){ data, response, error in
+      if let jsonResult: NSDictionary = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSDictionary {
+        if let outcome = jsonResult["outcome"]{
+          if outcome as! String == "canceled"{
+            successCallback()
+          }
+        }
+        if let error = error {
+          failureCallback(error)
+        }
+      }
+    }
+    task.resume()
+    
+  }
+  else{
+    failureCallback(NSError(domain: "Information missing in model Sorry", code: 999, userInfo: nil))
+  }
 }
 
-func cancelBuild(build:Build, successCallback:AnyObject ->() ,  failureCallback:NSError!->() ){
-  //https://circleci.com/api/v1/project/:username/:project/:build_num/cancel?circle-token=af5180393c26adc087340e9bc5fb2d96405ef289
+
+
+func rebuild(build:Build, successCallback:Void ->() ,  failureCallback:NSError!->() ){
+  if let username = build.username, reponame = build.reponame, buildNum = build.build_num{
+    let url: NSURL = NSURL(string: CircleAPI.RetryBuild(username, reponame, buildNum.stringValue).path)!
+    let request1: NSMutableURLRequest = NSMutableURLRequest(URL: url)
+    request1.HTTPMethod = "POST"
+    request1.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    request1.setValue("application/json", forHTTPHeaderField: "Accept")
+    let task  = NSURLSession.sharedSession().dataTaskWithRequest(request1){ data, response, error in
+      if let jsonResult: NSDictionary = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSDictionary {
+        if let lifecycle = jsonResult["lifecycle"]{
+          if lifecycle as! String == "queued"{
+            successCallback()
+          }
+        }
+        if let error = error {
+          failureCallback(error)
+        }
+      }
+    }
+    task.resume()
+    
+  }
+  else{
+    failureCallback(NSError(domain: "Information missing in model Sorry", code: 999, userInfo: nil))
+  }
 }
 

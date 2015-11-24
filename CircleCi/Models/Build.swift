@@ -30,11 +30,13 @@ class Build: Mappable {
   var why: String?
   var user: User?
   var retries:String?
+  var username:String?
   required init?(_ map: Map) {
     
   }
   
   func mapping(map: Map) {
+    username <- map["username"]
     author_name <- map["author_name"]
     timedout <- map["timedout"]
     lifecycle <- map["lifecycle"]

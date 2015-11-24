@@ -49,12 +49,6 @@ class BuildViewModel{
     }
     
   }
-  func getBuildsForProject(){
-    
-  }
-  func getBuildsForAndBranch(){
-    
-  }
   
   func numberOfSectionsInCollectionView()->Int{
     return 1
@@ -98,14 +92,35 @@ class BuildViewModel{
   
   func didSelectCellAtIndexPath(indexPath:NSIndexPath){
     selectedBuild = builds?[indexPath.row]
-    alertViewManager.showAlertView("TAKE CONTROL!!!!", message: "You have the power", cancelButtonTitle: "Cancel", cancelButtonAction: nil, otherButtonTitles:["Cancel","Rebuild"], otherButtonActions:[rebuildAction, cancelAction])
+    alertViewManager.showAlertView("TAKE CONTROL!!!!", message: "You have the power", cancelButtonTitle: "Cancel", cancelButtonAction: nil, otherButtonTitles:["Cancel","Rebuild"], otherButtonActions:[ cancelAction,rebuildAction])
   }
   
   func cancelAction(){
-    
+    SVProgressHUD.showWithStatus("Ok lets try to cancel the build")
+    if let selectedBuild = selectedBuild{
+    cancelBuild(selectedBuild, successCallback: {
+      SVProgressHUD.showSuccessWithStatus("Its gone!")
+      self.getData()
+      }) { (error) -> () in
+        SVProgressHUD.showErrorWithStatus(error.localizedDescription)
+      }
+    }else{
+      SVProgressHUD.showErrorWithStatus("no selected build")
+    }
   }
+  
   func rebuildAction(){
-    
+    SVProgressHUD.showWithStatus("Ok lets try to rebuild the ......build")
+    if let selectedBuild = selectedBuild{
+      rebuild(selectedBuild, successCallback: {
+        SVProgressHUD.showSuccessWithStatus("Its building!")
+        self.getData()
+        }) { (error) -> () in
+          SVProgressHUD.showErrorWithStatus(error.localizedDescription)
+      }
+    }else{
+      SVProgressHUD.showErrorWithStatus("no selected build")
+    }
   }
   
   func getProjectsNames()->[String]{
