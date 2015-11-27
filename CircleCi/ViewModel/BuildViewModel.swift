@@ -35,9 +35,15 @@ class BuildViewModel{
   }
   
   func getAllBuilds() {
-    SVProgressHUD.showWithStatus("ITS LOADING!!! GET OVER IT")
+    dispatch_async(dispatch_get_main_queue()){
+
+      SVProgressHUD.showWithStatus("ITS LOADING!!! GET OVER IT")
+    }
     getBuildForProjects(selectedProject?.username, projectName: selectedProject?.reponame, branch: selectedBranchName, successCallback: { (response) -> () in
-      SVProgressHUD.showSuccessWithStatus("OK ITS Finished")
+      dispatch_async(dispatch_get_main_queue()){
+
+        SVProgressHUD.showSuccessWithStatus("OK ITS Finished")
+      }
       if let res = (response as? NSArray) {
         self.builds = res as? Array<Build>
         dispatch_async(dispatch_get_main_queue()){

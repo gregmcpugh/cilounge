@@ -26,7 +26,7 @@ class ViewController: UIViewController {
   @IBOutlet weak var collectionView: UICollectionView!
   override func viewDidLoad() {
     super.viewDidLoad()
-    title = "CIRCLE"
+    title = "CiLounge"
     buildViewModel = BuildViewModel()
     buildViewModel?.delgate = self
     branchBarButton = UIBarButtonItem(title: "Branch", style: UIBarButtonItemStyle.Plain, target: self, action: "branchAction")
