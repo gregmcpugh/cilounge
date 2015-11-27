@@ -44,7 +44,6 @@ class BuildViewModel{
       SVProgressHUD.showSuccessWithStatus("OK ITS Finished")
       if let res = (response as? NSArray) {
         self.builds = res as? Array<Build>
-        self.checkForRunningBuilds(self.builds!)
         dispatch_async(dispatch_get_main_queue()){
           self.delgate?.reloadCollectionView()
         }
@@ -61,35 +60,7 @@ class BuildViewModel{
     }
     return "speaker_off"
   }
-  
-  func checkForRunningBuilds(builds:[Build]){
-    var numberOfFails = 0
-    var numberOfSuccess = 0
-    let newRunningBuilds = builds.filter({$0.status == "running"})
-    if let runningBuilds = runningBuilds {
-      for build in runningBuilds{
-        let newVersion = builds.filter({$0.build_num == build.build_num})[0]
-          if newVersion.status == "failed" {
-            numberOfFails++
-          }
-          else if newVersion.status == "success"{
-            numberOfSuccess++
-        }
-      }
-    }
-    runningBuilds = newRunningBuilds
-    
-    if numberOfFails > 0 {
-      
-      return
-    }
-    
-    if numberOfSuccess > 0 {
-      
-      return
-    }
-  }
-  
+
   func checkPreviousBuildStatus(newBuilds:[Build]){
     
   }
@@ -105,6 +76,7 @@ class BuildViewModel{
   func branchAction(){
     if let selectedProject = selectedProject{
       alertViewManager.showAlertList("Branch Selection", message: "Please Select branch", cancelButtonTitle: "All branches", cancelButtonAction:{ () -> Void in
+        self.selectedProject = nil
         self.selectedBranchName = nil
         self.delgate?.reloadButtons( self.selectedProject?.reponame ?? "Project" , branchName:"Branch")
         self.getData()

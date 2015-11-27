@@ -9,7 +9,6 @@
 import Foundation
 import ObjectMapper
 
-let token = "af5180393c26adc087340e9bc5fb2d96405ef289"
 let BASE_URL = "https://circleci.com/api/v1/"
 
 enum CircleAPI {
@@ -21,12 +20,12 @@ enum CircleAPI {
   case Projects
   var path : String {
     switch self {
-    case RecenBuilds:                                        return BASE_URL + "recent-builds?circle-token=" + token
-    case RecentBuildProject(let user, let project):                    return BASE_URL + "project/" + user + "/" + project + "?circle-token=" + token
-    case RecentBuildBranch(let user,let project, let branch):          return BASE_URL + "project/" + user + "/" + project  + "/tree/" + branch + "?circle-token=" + token
-    case CancelBuild(let user, let project,let buildNumber): return BASE_URL + "project/" + user + "/" + project + "/" + buildNumber + "/cancel?circle-token="  + token
-    case RetryBuild(let user, let project,let buildNumber): return BASE_URL + "project/" + user + "/" + project + "/" + buildNumber + "/retry?circle-token="  + token
-    case Projects:                                           return BASE_URL + "projects?circle-token=" + token
+    case RecenBuilds:                                        return BASE_URL + "recent-builds?circle-token=" +  getCurrentAccessToken()
+    case RecentBuildProject(let user, let project):                    return BASE_URL + "project/" + user + "/" + project + "?circle-token=" + getCurrentAccessToken()
+    case RecentBuildBranch(let user,let project, let branch):          return BASE_URL + "project/" + user + "/" + project  + "/tree/" + branch + "?circle-token=" +  getCurrentAccessToken()
+    case CancelBuild(let user, let project,let buildNumber): return BASE_URL + "project/" + user + "/" + project + "/" + buildNumber + "/cancel?circle-token="  +  getCurrentAccessToken()
+    case RetryBuild(let user, let project,let buildNumber): return BASE_URL + "project/" + user + "/" + project + "/" + buildNumber + "/retry?circle-token="  +  getCurrentAccessToken()
+    case Projects:                                           return BASE_URL + "projects?circle-token=" + getCurrentAccessToken()
     }
   }
 }
@@ -47,12 +46,21 @@ func getBuildForProjects(userName:String?, projectName:String?, branch:String? ,
   request1.setValue("application/json", forHTTPHeaderField: "Accept")
   
   let task  = NSURLSession.sharedSession().dataTaskWithRequest(request1){ data, response, error in
-    if let jsonResult: NSArray = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSArray {
-      successCallback(Mapper<Build>().mapArray(jsonResult)!)
+    if let httpResponse = response as? NSHTTPURLResponse {
+      if httpResponse.statusCode == 401{
+        failureCallback(NSError(domain: "Unauthorised", code: 401, userInfo: nil))
+      }
+    }
+    else{
+      if let jsonResult: NSArray = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSArray {
+        successCallback(Mapper<Build>().mapArray(jsonResult)!)
+      }
     }
     if let error = error {
       failureCallback(error)
     }
+    
+  
   }
   task.resume()
   
@@ -65,9 +73,17 @@ func getProjects(successCallback:AnyObject ->() ,  failureCallback:NSError!->() 
   request1.setValue("application/json", forHTTPHeaderField: "Accept")
   
   let task  = NSURLSession.sharedSession().dataTaskWithRequest(request1){ data, response, error in
+
+    if let httpResponse = response as? NSHTTPURLResponse {
+      if httpResponse.statusCode == 401{
+        failureCallback(NSError(domain: "Unauthorised", code: 401, userInfo: nil))
+      }
+    }
+    else{
     if let jsonResult: NSArray = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSArray {
       let projects =   Mapper<Project>().mapArray(jsonResult)
       successCallback(projects!)
+      }
     }
     if let error = error {
       failureCallback(error)
@@ -84,14 +100,21 @@ func cancelBuild(build:Build, successCallback:Void ->() ,  failureCallback:NSErr
     request1.setValue("application/json", forHTTPHeaderField: "Content-Type")
     request1.setValue("application/json", forHTTPHeaderField: "Accept")
     let task  = NSURLSession.sharedSession().dataTaskWithRequest(request1){ data, response, error in
-      if let jsonResult: NSDictionary = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSDictionary {
-        if let outcome = jsonResult["outcome"]{
-          if outcome as! String == "canceled"{
-            successCallback()
-          }
+      if let httpResponse = response as? NSHTTPURLResponse {
+        if httpResponse.statusCode == 401{
+          failureCallback(NSError(domain: "Unauthorised", code: 401, userInfo: nil))
         }
-        if let error = error {
-          failureCallback(error)
+      }
+      else{
+        if let jsonResult: NSDictionary = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSDictionary {
+          if let outcome = jsonResult["outcome"]{
+            if outcome as! String == "canceled"{
+              successCallback()
+            }
+          }
+          if let error = error {
+            failureCallback(error)
+          }
         }
       }
     }
@@ -113,14 +136,21 @@ func rebuild(build:Build, successCallback:Void ->() ,  failureCallback:NSError!-
     request1.setValue("application/json", forHTTPHeaderField: "Content-Type")
     request1.setValue("application/json", forHTTPHeaderField: "Accept")
     let task  = NSURLSession.sharedSession().dataTaskWithRequest(request1){ data, response, error in
-      if let jsonResult: NSDictionary = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSDictionary {
-        if let lifecycle = jsonResult["lifecycle"]{
-          if lifecycle as! String == "queued"{
-            successCallback()
-          }
+      if let httpResponse = response as? NSHTTPURLResponse {
+        if httpResponse.statusCode == 401{
+          failureCallback(NSError(domain: "Unauthorised", code: 401, userInfo: nil))
         }
-        if let error = error {
-          failureCallback(error)
+      }
+      else{
+        if let jsonResult: NSDictionary = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSDictionary {
+          if let lifecycle = jsonResult["lifecycle"]{
+            if lifecycle as! String == "queued"{
+              successCallback()
+            }
+          }
+          if let error = error {
+            failureCallback(error)
+          }
         }
       }
     }

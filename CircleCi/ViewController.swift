@@ -11,12 +11,13 @@ import ObjectMapper
 
 class ViewController: UIViewController {
 
+  @IBOutlet weak var reloadLabel: UILabel!
   var buildViewModel:BuildViewModel?
   var branchBarButton: UIBarButtonItem!
   var projectBarButton: UIBarButtonItem!
   var speakerBarButton: UIBarButtonItem!
   
-  let refreshWaitTime = 30
+  var refreshWaitTime:Int?
   var currentRefreshTime = 0
   var timer:NSTimer?
   
@@ -30,15 +31,18 @@ class ViewController: UIViewController {
     buildViewModel?.delgate = self
     branchBarButton = UIBarButtonItem(title: "Branch", style: UIBarButtonItemStyle.Plain, target: self, action: "branchAction")
     projectBarButton = UIBarButtonItem(title: "Project", style: UIBarButtonItemStyle.Plain, target: self, action: "projectAction")
-    speakerBarButton = UIBarButtonItem(image: UIImage(named: ""), style: UIBarButtonItemStyle.Plain, target: self, action: "speakerAction")
-    self.navigationItem.leftBarButtonItem = speakerBarButton
-    self.navigationItem.rightBarButtonItems  = [branchBarButton, projectBarButton]
+   self.navigationItem.rightBarButtonItems  = [branchBarButton, projectBarButton]
+    
+  }
+  override func viewDidAppear(animated: Bool) {
+    buildViewModel?.getData()
+    refreshWaitTime = Int(getRefreshRate())
   }
   
   func update(){
     currentRefreshTime++
     
-    refreshButton.setTitle( "Reloading in \(refreshWaitTime - currentRefreshTime)", forState: UIControlState.Normal)
+    reloadLabel.text = "Reloading in \(refreshWaitTime! - currentRefreshTime)"
     
     if currentRefreshTime == refreshWaitTime{
       currentRefreshTime = 0
@@ -46,10 +50,9 @@ class ViewController: UIViewController {
     }
   }
   
-  override func viewDidAppear(animated: Bool) {
-    buildViewModel?.getData()
+  @IBAction func settingsAction(sender: AnyObject) {
+    performSegueWithIdentifier("seg_main_to_settings", sender: nil)
   }
-
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
   }

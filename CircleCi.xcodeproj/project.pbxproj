@@ -10,6 +10,8 @@
 		3A5AD65C1BFF5FCA00A9C7F2 /* BuildViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5AD65B1BFF5FCA00A9C7F2 /* BuildViewModel.swift */; };
 		3A5AD6601BFF609500A9C7F2 /* CircleApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5AD65F1BFF609500A9C7F2 /* CircleApiService.swift */; };
 		3ABE47C31C04BDDE0013ED3B /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABE47C21C04BDDE0013ED3B /* Extensions.swift */; };
+		3ABE47C51C087E7E0013ED3B /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABE47C41C087E7E0013ED3B /* SettingsViewController.swift */; };
+		3ABE47C71C087FFA0013ED3B /* LocalStorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABE47C61C087FFA0013ED3B /* LocalStorageManager.swift */; };
 		5657A4061BFB536A00EBA81E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5657A4051BFB536A00EBA81E /* AppDelegate.swift */; };
 		5657A4081BFB536A00EBA81E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5657A4071BFB536A00EBA81E /* ViewController.swift */; };
 		5657A40B1BFB536A00EBA81E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5657A4091BFB536A00EBA81E /* Main.storyboard */; };
@@ -52,6 +54,8 @@
 		3A5AD65B1BFF5FCA00A9C7F2 /* BuildViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BuildViewModel.swift; path = ViewModel/BuildViewModel.swift; sourceTree = "<group>"; };
 		3A5AD65F1BFF609500A9C7F2 /* CircleApiService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CircleApiService.swift; path = Services/CircleApiService.swift; sourceTree = "<group>"; };
 		3ABE47C21C04BDDE0013ED3B /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		3ABE47C41C087E7E0013ED3B /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		3ABE47C61C087FFA0013ED3B /* LocalStorageManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocalStorageManager.swift; path = Manager/LocalStorageManager.swift; sourceTree = "<group>"; };
 		5657A4021BFB536A00EBA81E /* CircleCi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CircleCi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5657A4051BFB536A00EBA81E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5657A4071BFB536A00EBA81E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -116,6 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				5657A44D1BFF6E3000EBA81E /* UIAlertControllerManager.swift */,
+				3ABE47C61C087FFA0013ED3B /* LocalStorageManager.swift */,
 			);
 			name = Manager;
 			sourceTree = "<group>";
@@ -124,6 +129,7 @@
 			isa = PBXGroup;
 			children = (
 				5657A4071BFB536A00EBA81E /* ViewController.swift */,
+				3ABE47C41C087E7E0013ED3B /* SettingsViewController.swift */,
 			);
 			name = view;
 			sourceTree = "<group>";
@@ -424,6 +430,8 @@
 				5657A4401BFDE8D800EBA81E /* Node.swift in Sources */,
 				5657A4081BFB536A00EBA81E /* ViewController.swift in Sources */,
 				5657A44E1BFF6E3000EBA81E /* UIAlertControllerManager.swift in Sources */,
+				3ABE47C51C087E7E0013ED3B /* SettingsViewController.swift in Sources */,
+				3ABE47C71C087FFA0013ED3B /* LocalStorageManager.swift in Sources */,
 				5657A43A1BFDE8D800EBA81E /* Branch.swift in Sources */,
 				5657A43B1BFDE8D800EBA81E /* Build.swift in Sources */,
 				5657A44C1BFF3BB600EBA81E /* BuildCollectionViewCell.swift in Sources */,
