@@ -14,6 +14,7 @@ class ViewController: UIViewController {
   var buildViewModel:BuildViewModel?
   var branchBarButton: UIBarButtonItem!
   var projectBarButton: UIBarButtonItem!
+  var speakerBarButton: UIBarButtonItem!
   
   let refreshWaitTime = 30
   var currentRefreshTime = 0
@@ -29,6 +30,8 @@ class ViewController: UIViewController {
     buildViewModel?.delgate = self
     branchBarButton = UIBarButtonItem(title: "Branch", style: UIBarButtonItemStyle.Plain, target: self, action: "branchAction")
     projectBarButton = UIBarButtonItem(title: "Project", style: UIBarButtonItemStyle.Plain, target: self, action: "projectAction")
+    speakerBarButton = UIBarButtonItem(image: UIImage(named: ""), style: UIBarButtonItemStyle.Plain, target: self, action: "speakerAction")
+    self.navigationItem.leftBarButtonItem = speakerBarButton
     self.navigationItem.rightBarButtonItems  = [branchBarButton, projectBarButton]
   }
   
@@ -62,6 +65,10 @@ class ViewController: UIViewController {
   @IBAction func refreshAction(sender: AnyObject) {
     currentRefreshTime = 0
     buildViewModel?.getData()
+  }
+  
+  func speakerAction(){
+    
   }
 }
 

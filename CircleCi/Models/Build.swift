@@ -90,6 +90,12 @@ class Build: Mappable {
   }
 
 }
+extension Build:Equatable{}
+
+func ==(lhs: Build, rhs: Build) -> Bool {
+  return ObjectIdentifier(lhs) == ObjectIdentifier(rhs)
+}
+
 
 extension NSTimeInterval {
   var minuteSecondMS: String {

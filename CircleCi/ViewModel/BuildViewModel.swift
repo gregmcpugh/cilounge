@@ -20,6 +20,10 @@ class BuildViewModel{
   var selectedProject:Project?
   var selectedBranchName:String?
   var selectedBuild:Build?
+  var runningBuilds:[Build]?
+  var speakerOn:Bool = false
+
+  
   lazy var alertViewManager: UIAlertControllerManager = {
     UIAlertControllerManager()
   }()
@@ -34,12 +38,13 @@ class BuildViewModel{
     }
   }
   
-  func getAllBuilds(){
+  func getAllBuilds() {
     SVProgressHUD.showWithStatus("ITS LOADING!!! GET OVER IT")
     getBuildForProjects(selectedProject?.username, projectName: selectedProject?.reponame, branch: selectedBranchName, successCallback: { (response) -> () in
       SVProgressHUD.showSuccessWithStatus("OK ITS Finished")
       if let res = (response as? NSArray) {
         self.builds = res as? Array<Build>
+        self.checkForRunningBuilds(self.builds!)
         dispatch_async(dispatch_get_main_queue()){
           self.delgate?.reloadCollectionView()
         }
@@ -47,6 +52,45 @@ class BuildViewModel{
       }) { (error) -> () in
         SVProgressHUD.showErrorWithStatus(error.localizedDescription)
     }
+  }
+  
+  func speakerToggle() -> String{
+    speakerOn = !speakerOn
+    if speakerOn{
+      return "speaker_on"
+    }
+    return "speaker_off"
+  }
+  
+  func checkForRunningBuilds(builds:[Build]){
+    var numberOfFails = 0
+    var numberOfSuccess = 0
+    let newRunningBuilds = builds.filter({$0.status == "running"})
+    if let runningBuilds = runningBuilds {
+      for build in runningBuilds{
+        let newVersion = builds.filter({$0.build_num == build.build_num})[0]
+          if newVersion.status == "failed" {
+            numberOfFails++
+          }
+          else if newVersion.status == "success"{
+            numberOfSuccess++
+        }
+      }
+    }
+    runningBuilds = newRunningBuilds
+    
+    if numberOfFails > 0 {
+      
+      return
+    }
+    
+    if numberOfSuccess > 0 {
+      
+      return
+    }
+  }
+  
+  func checkPreviousBuildStatus(newBuilds:[Build]){
     
   }
   
@@ -60,15 +104,16 @@ class BuildViewModel{
   
   func branchAction(){
     if let selectedProject = selectedProject{
-      alertViewManager.showAlertList("Branch Selection", message: "Please Select branch", cancelButtonTitle: "Cancel", cancelButtonAction:{ () -> Void in
-        self.selectedProject = nil
+      alertViewManager.showAlertList("Branch Selection", message: "Please Select branch", cancelButtonTitle: "All branches", cancelButtonAction:{ () -> Void in
         self.selectedBranchName = nil
-        self.delgate?.reloadButtons( "Project", branchName:"Branch")
+        self.delgate?.reloadButtons( self.selectedProject?.reponame ?? "Project" , branchName:"Branch")
+        self.getData()
         }, otherButtonTitles:  selectedProject.getBrancheNames(), indexActionHandler: { index in
           let id = index as! Int
           var branches = self.selectedProject?.getBrancheNames()
           self.selectedBranchName = branches![id] as String
           self.delgate?.reloadButtons( self.selectedProject?.reponame ?? "Project", branchName: self.selectedBranchName ?? "Branch")
+          self.getData()
       })
     }
     else{
@@ -79,14 +124,18 @@ class BuildViewModel{
   
   func projectAction(){
     
-    alertViewManager.showAlertList("Branch Selection", message: "Please Select Project", cancelButtonTitle: "Cancel", cancelButtonAction: { () -> Void in
+    alertViewManager.showAlertList("Branch Selection", message: "Please Select Project", cancelButtonTitle: "All Projects", cancelButtonAction: { () -> Void in
       self.selectedProject = nil
       self.selectedBranchName = nil
       self.delgate?.reloadButtons( "Project", branchName:"Branch")
+      self.getData()
       }, otherButtonTitles:getProjectsNames(), indexActionHandler: { index in
         let id = index as! Int
         self.selectedProject = self.projects?[id]
-        self.delgate?.reloadButtons( self.selectedProject?.reponame ?? "Project", branchName: self.selectedBranchName ?? "Branch")    })
+        self.delgate?.reloadButtons( self.selectedProject?.reponame ?? "Project", branchName: self.selectedBranchName ?? "Branch")
+        self.getData()
+    })
+    
     
   }
   

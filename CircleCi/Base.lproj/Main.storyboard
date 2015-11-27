@@ -157,7 +157,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mLh-uF-x9t">
                                         <rect key="frame" x="0.0" y="0.0" width="1920" height="55"/>
                                         <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
-                                        <state key="normal" title="Button"/>
+                                        <state key="normal" title="Refresh"/>
                                         <connections>
                                             <action selector="refreshAction:" destination="BYZ-38-t0r" eventType="primaryActionTriggered" id="Mrm-Ve-tqw"/>
                                         </connections>
