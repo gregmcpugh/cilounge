@@ -38,6 +38,11 @@ class ViewController: UIViewController {
     buildViewModel?.getData()
     refreshWaitTime = Int(getRefreshRate())
   }
+  override func viewWillDisappear(animated: Bool) {
+    timer?.invalidate()
+    currentRefreshTime = 0
+    reloadLabel.text = "Reloading in \(refreshWaitTime! - currentRefreshTime)"
+  }
   
   func update(){
     currentRefreshTime++

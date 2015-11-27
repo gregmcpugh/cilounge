@@ -34,6 +34,7 @@ func saveAccessToken(accessToken:String){
 private func saveStringToLocalStorage(key:String, value:String){
   let defaults = NSUserDefaults.standardUserDefaults()
   defaults.setObject(value, forKey: key)
+  defaults.synchronize()
 }
 
 private func getStringFromLocalStorage(key:String) -> String?{

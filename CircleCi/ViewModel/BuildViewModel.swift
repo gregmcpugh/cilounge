@@ -32,10 +32,6 @@ class BuildViewModel{
   
   func getData(){
     getAllBuilds()
-    getProjects({response -> () in
-      self.projects = response as! [Project]
-      }) { error -> () in
-    }
   }
   
   func getAllBuilds() {
@@ -47,9 +43,16 @@ class BuildViewModel{
         dispatch_async(dispatch_get_main_queue()){
           self.delgate?.reloadCollectionView()
         }
+        getProjects({response -> () in
+          self.projects = response as! [Project]
+          }) { error -> () in
+        }
       }
       }) { (error) -> () in
-        SVProgressHUD.showErrorWithStatus(error.localizedDescription)
+        dispatch_async(dispatch_get_main_queue()){
+        SVProgressHUD.dismiss()
+          self.alertViewManager.showAlertView("Error", message: error.localizedDescription, cancelButtonTitle: "Ok", cancelButtonAction: nil, otherButtonTitles: nil, otherButtonActions: nil)
+        }
     }
   }
   
@@ -146,8 +149,10 @@ class BuildViewModel{
   
   func getProjectsNames()->[String]{
     var strArray = [String]()
-    for projct in projects!{
+    if let projects = projects{
+    for projct in projects{
       strArray.append(projct.reponame!)
+      }
     }
     return strArray
   }

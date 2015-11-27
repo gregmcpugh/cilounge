@@ -22,7 +22,7 @@ class SettingsViewController: UIViewController {
         super.viewDidLoad()
       title = "Settings"
       RefreshButton.setTitle("Refresh rate: \(getRefreshRate())", forState: UIControlState.Normal)
-      AccessTokenTextField.text = "Access Token: \(getCurrentAccessToken())"
+      AccessTokenTextField.text = "\(getCurrentAccessToken())"
     }
 
     override func didReceiveMemoryWarning() {
@@ -35,6 +35,7 @@ class SettingsViewController: UIViewController {
       let id = index as! Int
       let selectedTime = self.refreshOptions[id]
       saveRefreshRate(selectedTime)
+      self.RefreshButton.setTitle("Refresh rate: \(selectedTime)", forState: UIControlState.Normal)
      }
 }
 }

@@ -50,17 +50,18 @@ func getBuildForProjects(userName:String?, projectName:String?, branch:String? ,
       if httpResponse.statusCode == 401{
         failureCallback(NSError(domain: "Unauthorised", code: 401, userInfo: nil))
       }
-    }
-    else{
-      if let jsonResult: NSArray = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSArray {
-        successCallback(Mapper<Build>().mapArray(jsonResult)!)
+      else if httpResponse.statusCode == 200{
+        if let jsonResult: NSArray = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSArray {
+          successCallback(Mapper<Build>().mapArray(jsonResult)!)
+        }
       }
     }
+
     if let error = error {
       failureCallback(error)
     }
     
-  
+    
   }
   task.resume()
   
@@ -73,16 +74,17 @@ func getProjects(successCallback:AnyObject ->() ,  failureCallback:NSError!->() 
   request1.setValue("application/json", forHTTPHeaderField: "Accept")
   
   let task  = NSURLSession.sharedSession().dataTaskWithRequest(request1){ data, response, error in
-
+    
     if let httpResponse = response as? NSHTTPURLResponse {
+      
       if httpResponse.statusCode == 401{
         failureCallback(NSError(domain: "Unauthorised", code: 401, userInfo: nil))
       }
-    }
-    else{
-    if let jsonResult: NSArray = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSArray {
-      let projects =   Mapper<Project>().mapArray(jsonResult)
-      successCallback(projects!)
+      if httpResponse.statusCode == 200{
+        if let jsonResult: NSArray = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSArray {
+          let projects =   Mapper<Project>().mapArray(jsonResult)
+          successCallback(projects!)
+        }
       }
     }
     if let error = error {
@@ -104,20 +106,23 @@ func cancelBuild(build:Build, successCallback:Void ->() ,  failureCallback:NSErr
         if httpResponse.statusCode == 401{
           failureCallback(NSError(domain: "Unauthorised", code: 401, userInfo: nil))
         }
-      }
-      else{
-        if let jsonResult: NSDictionary = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSDictionary {
-          if let outcome = jsonResult["outcome"]{
-            if outcome as! String == "canceled"{
-              successCallback()
+        if httpResponse.statusCode == 200{
+          if let jsonResult: NSDictionary = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSDictionary {
+            if let outcome = jsonResult["outcome"]{
+              if outcome as! String == "canceled"{
+                successCallback()
+              }
             }
-          }
-          if let error = error {
-            failureCallback(error)
+            
           }
         }
       }
+      
+      if let error = error {
+        failureCallback(error)
+      }
     }
+    
     task.resume()
     
   }
@@ -140,18 +145,21 @@ func rebuild(build:Build, successCallback:Void ->() ,  failureCallback:NSError!-
         if httpResponse.statusCode == 401{
           failureCallback(NSError(domain: "Unauthorised", code: 401, userInfo: nil))
         }
-      }
-      else{
-        if let jsonResult: NSDictionary = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSDictionary {
-          if let lifecycle = jsonResult["lifecycle"]{
-            if lifecycle as! String == "queued"{
-              successCallback()
+        if httpResponse.statusCode == 200{
+          if let jsonResult: NSDictionary = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSDictionary {
+            if let lifecycle = jsonResult["lifecycle"]{
+              if lifecycle as! String == "queued"{
+                successCallback()
+              }
             }
-          }
-          if let error = error {
-            failureCallback(error)
+            
           }
         }
+        
+        if let error = error {
+          failureCallback(error)
+        }
+        
       }
     }
     task.resume()
