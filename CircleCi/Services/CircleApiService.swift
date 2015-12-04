@@ -60,12 +60,11 @@ func getBuildForProjects(userName:String?, projectName:String?, branch:String? ,
     if let error = error {
       failureCallback(error)
     }
-    
-    
   }
   task.resume()
   
 }
+
 
 func getProjects(successCallback:AnyObject ->() ,  failureCallback:NSError!->() ){
   let url: NSURL = NSURL(string: CircleAPI.Projects.path)!

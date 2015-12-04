@@ -26,7 +26,10 @@ class ViewController: UIViewController {
   @IBOutlet weak var collectionView: UICollectionView!
   override func viewDidLoad() {
     super.viewDidLoad()
-    title = "CiLounge"
+    var titleView = UIImageView(image: UIImage(named: "titleImage"))
+    self.navigationItem.titleView = titleView
+
+
     buildViewModel = BuildViewModel()
     buildViewModel?.delgate = self
     branchBarButton = UIBarButtonItem(title: "Branch", style: UIBarButtonItemStyle.Plain, target: self, action: "branchAction")
@@ -118,8 +121,10 @@ extension ViewController:UICollectionViewDataSource{
       cell.timeLabel.text = buildModel.getTimeTaken()
       cell.contentView.layer.cornerRadius = 6.0
       cell.contentView.layer.borderWidth = 1.0
+      cell.contentView.layer.borderColor = buildModel.statusColour().CGColor
       cell.contentView.layer.masksToBounds = true
       cell.layer.shadowOffset = CGSizeMake(0, 2.0)
+      
       cell.layer.shadowRadius = 2.0
       cell.layer.shadowOpacity = 1.0
       cell.layer.masksToBounds = false

@@ -35,6 +35,7 @@
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="paY-kb-4vY">
                                 <rect key="frame" x="0.0" y="200" width="1920" height="880"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="30" minimumInteritemSpacing="5" id="pzf-X2-x7X">
                                     <size key="itemSize" width="400" height="400"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -158,7 +159,7 @@
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XDS-Ps-pHi">
                                         <rect key="frame" x="0.0" y="0.0" width="1920" height="55"/>
                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="40"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="textColor" red="0.098039215686274508" green="0.40000000000000002" blue="0.52156862745098043" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
@@ -172,6 +173,7 @@
                                 </constraints>
                             </view>
                         </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="paY-kb-4vY" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="1RO-AE-kji"/>
                             <constraint firstAttribute="trailing" secondItem="Tx5-4x-TRp" secondAttribute="trailing" id="Irs-Es-Sh5"/>
@@ -185,11 +187,13 @@
                     <navigationItem key="navigationItem" id="YzK-Sm-LCw">
                         <leftBarButtonItems>
                             <barButtonItem title="Settings" id="fPU-Rw-Ek4">
+                                <color key="tintColor" red="0.1137254902" green="0.40000000000000002" blue="0.51764705879999995" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
                                     <action selector="settingsAction:" destination="BYZ-38-t0r" id="EBj-f9-GzN"/>
                                 </connections>
                             </barButtonItem>
                             <barButtonItem title="Refresh" id="lLa-vg-6G5">
+                                <color key="tintColor" red="0.1137254902" green="0.40000000000000002" blue="0.51764705879999995" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
                                     <action selector="refreshAction:" destination="BYZ-38-t0r" id="h1J-e2-Zzd"/>
                                 </connections>
