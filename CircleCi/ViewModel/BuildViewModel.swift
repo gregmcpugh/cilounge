@@ -8,7 +8,8 @@
 
 import Foundation
 import UIKit
-import SVProgressHUD
+import SwiftSpinner
+
 protocol BuildViewModelProtocol:class{
   
   func reloadCollectionView()
@@ -36,13 +37,11 @@ class BuildViewModel{
   
   func getAllBuilds() {
     dispatch_async(dispatch_get_main_queue()){
-
-      SVProgressHUD.showWithStatus("ITS LOADING!!! GET OVER IT")
+      SwiftSpinner.show("ITS LOADING!!! GET OVER IT")
     }
     getBuildForProjects(selectedProject?.username, projectName: selectedProject?.reponame, branch: selectedBranchName, successCallback: { (response) -> () in
       dispatch_async(dispatch_get_main_queue()){
-
-        SVProgressHUD.showSuccessWithStatus("OK ITS Finished")
+          SwiftSpinner.showWithDuration(2.0, title: "OK ITS Finished", animated: false)
       }
       if let res = (response as? NSArray) {
         self.builds = res as? Array<Build>
@@ -56,7 +55,7 @@ class BuildViewModel{
       }
       }) { (error) -> () in
         dispatch_async(dispatch_get_main_queue()){
-        SVProgressHUD.dismiss()
+        SwiftSpinner.hide()
           self.alertViewManager.showAlertView("Error", message: error.localizedDescription, cancelButtonTitle: "Ok", cancelButtonAction: nil, otherButtonTitles: nil, otherButtonActions: nil)
         }
     }
@@ -126,31 +125,42 @@ class BuildViewModel{
   }
   
   func cancelAction(){
-    SVProgressHUD.showWithStatus("Ok lets try to cancel the build")
+    SwiftSpinner.show("Ok lets try to cancel the build")
     if let selectedBuild = selectedBuild{
     cancelBuild(selectedBuild, successCallback: {
-      SVProgressHUD.showSuccessWithStatus("Its gone!")
+      SwiftSpinner.show("Its gone!", animated: false)
       self.getData()
       }) { (error) -> () in
-        SVProgressHUD.showErrorWithStatus(error.localizedDescription)
+        
+        SwiftSpinner.showWithDuration(2.0, title: error.localizedDescription, animated: false)
+        
       }
     }else{
-      SVProgressHUD.showErrorWithStatus("no selected build")
+      
+        SwiftSpinner.showWithDuration(2.0, title: "no selected build", animated: false)
+      
     }
+    SwiftSpinner.hide()
   }
   
   func rebuildAction(){
-    SVProgressHUD.showWithStatus("Ok lets try to rebuild the ......build")
+    SwiftSpinner.show("Ok lets try to rebuild the ......build")
     if let selectedBuild = selectedBuild{
       rebuild(selectedBuild, successCallback: {
-        SVProgressHUD.showSuccessWithStatus("Its building!")
+        SwiftSpinner.showWithDuration(2.0, title: "Its building", animated: false)
         self.getData()
         }) { (error) -> () in
-          SVProgressHUD.showErrorWithStatus(error.localizedDescription)
-      }
+        
+            SwiftSpinner.showWithDuration(2.0, title: error.localizedDescription, animated: false)
+          
+        }
     }else{
-      SVProgressHUD.showErrorWithStatus("no selected build")
+      
+        SwiftSpinner.showWithDuration(2.0, title: "no selected build", animated: false)
+      
+      
     }
+    SwiftSpinner.hide()
   }
   
   func getProjectsNames()->[String]{

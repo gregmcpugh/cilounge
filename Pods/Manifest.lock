@@ -1,15 +1,15 @@
 PODS:
   - ObjectMapper (1.2.0)
-  - SVProgressHUD (2.0.3)
+  - SwiftSpinner (0.9.5)
 
 DEPENDENCIES:
   - ObjectMapper (~> 1.2.0)
-  - SVProgressHUD (~> 2.0.3)
+  - SwiftSpinner
 
 SPEC CHECKSUMS:
   ObjectMapper: b1e9c7c8a9f6400b72690c80072c131504caa66f
-  SVProgressHUD: b0830714205bea1317ea1a2ebc71e5633af334d4
+  SwiftSpinner: c6585a0ae5c67eb33e737695cce88f0262008cce
 
-PODFILE CHECKSUM: 05dca25563b082dc2c1a53f498adef619f836992
+PODFILE CHECKSUM: 46b58951ca53f608edf3b69f68bb3832e89b196b
 
-COCOAPODS: 1.0.0
+COCOAPODS: 1.0.1
