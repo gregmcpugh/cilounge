@@ -333,7 +333,7 @@
 				TargetAttributes = {
 					5657A4011BFB536A00EBA81E = {
 						CreatedOnToolsVersion = 7.1;
-						DevelopmentTeam = E68QAAURD5;
+						DevelopmentTeam = LFS8E76U8X;
 					};
 					5657A4121BFB536A00EBA81E = {
 						CreatedOnToolsVersion = 7.1;
@@ -675,7 +675,7 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = CircleCi/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.marksandspencer.di.CircleCi;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.chacksfield-pugh.circleci";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_INSTALL_OBJC_HEADER = NO;
@@ -698,7 +698,7 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = CircleCi/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.marksandspencer.di.CircleCi;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.chacksfield-pugh.circleci";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_INSTALL_OBJC_HEADER = NO;
