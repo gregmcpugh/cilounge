@@ -30,7 +30,6 @@ enum CircleAPI {
   }
 }
 
-
 func getBuildForProjects(userName:String?, projectName:String?, branch:String? ,successCallback:AnyObject ->() ,  failureCallback:NSError!->() ){
   
   var url: NSURL = NSURL(string: CircleAPI.RecenBuilds.path)!

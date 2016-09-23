@@ -12,6 +12,9 @@ import ObjectMapper
 class ViewController: UIViewController {
 
   @IBOutlet weak var reloadLabel: UILabel!
+  @IBOutlet weak var refreshButton: UIButton!
+  @IBOutlet weak var collectionView: UICollectionView!
+  
   var buildViewModel:BuildViewModel?
   var branchBarButton: UIBarButtonItem!
   var projectBarButton: UIBarButtonItem!
@@ -21,35 +24,32 @@ class ViewController: UIViewController {
   var currentRefreshTime = 0
   var timer:NSTimer?
   
-  @IBOutlet weak var refreshButton: UIButton!
-  
-  @IBOutlet weak var collectionView: UICollectionView!
   override func viewDidLoad() {
     super.viewDidLoad()
-    var titleView = UIImageView(image: UIImage(named: "titleImage"))
+    let titleView = UIImageView(image: UIImage(named: "titleImage"))
     self.navigationItem.titleView = titleView
-
 
     buildViewModel = BuildViewModel()
     buildViewModel?.delgate = self
-    branchBarButton = UIBarButtonItem(title: "Branch", style: UIBarButtonItemStyle.Plain, target: self, action: "branchAction")
-    projectBarButton = UIBarButtonItem(title: "Project", style: UIBarButtonItemStyle.Plain, target: self, action: "projectAction")
+    branchBarButton = UIBarButtonItem(title: "Branch", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(ViewController.branchAction))
+    projectBarButton = UIBarButtonItem(title: "Project", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(ViewController.projectAction))
    self.navigationItem.rightBarButtonItems  = [branchBarButton, projectBarButton]
     
   }
+  
   override func viewDidAppear(animated: Bool) {
     buildViewModel?.getData()
     refreshWaitTime = Int(getRefreshRate())
   }
+  
   override func viewWillDisappear(animated: Bool) {
     timer?.invalidate()
     currentRefreshTime = 0
-    reloadLabel.text = "Reloading in \(refreshWaitTime! - currentRefreshTime)"
+//    reloadLabel.text = "Reloading in \(refreshWaitTime! - currentRefreshTime)"
   }
   
   func update(){
-    currentRefreshTime++
-    
+    currentRefreshTime += 1
     reloadLabel.text = "Reloading in \(refreshWaitTime! - currentRefreshTime)"
     
     if currentRefreshTime == refreshWaitTime{
@@ -86,15 +86,19 @@ class ViewController: UIViewController {
 extension ViewController:BuildViewModelProtocol{
   func reloadCollectionView() {
     timer?.invalidate()
-    timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("update"), userInfo: nil, repeats: true);
+    timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(ViewController.update), userInfo: nil, repeats: true);
     collectionView.reloadData()
   }
   
   func reloadButtons(projectName: String, branchName: String) {
     self.navigationItem.rightBarButtonItem = nil
-    branchBarButton = UIBarButtonItem(title: branchName, style: UIBarButtonItemStyle.Plain, target: self, action: "branchAction")
-    projectBarButton = UIBarButtonItem(title:  projectName, style: UIBarButtonItemStyle.Plain, target: self, action: "projectAction")
+    branchBarButton = UIBarButtonItem(title: branchName, style: UIBarButtonItemStyle.Plain, target: self, action: #selector(ViewController.branchAction))
+    projectBarButton = UIBarButtonItem(title:  projectName, style: UIBarButtonItemStyle.Plain, target: self, action: #selector(ViewController.projectAction))
     self.navigationItem.rightBarButtonItems  = [branchBarButton, projectBarButton]
+  }
+  
+  func navigateToSettings() {
+    performSegueWithIdentifier("seg_main_to_settings", sender: nil)
   }
 }
 
@@ -124,7 +128,6 @@ extension ViewController:UICollectionViewDataSource{
       cell.contentView.layer.borderColor = buildModel.statusColour().CGColor
       cell.contentView.layer.masksToBounds = true
       cell.layer.shadowOffset = CGSizeMake(0, 2.0)
-      
       cell.layer.shadowRadius = 2.0
       cell.layer.shadowOpacity = 1.0
       cell.layer.masksToBounds = false
@@ -148,8 +151,6 @@ extension ViewController:UICollectionViewDataSource{
         }, completion: nil)
     }
   }
-  
-  
 }
 
 extension ViewController:UICollectionViewDelegate{

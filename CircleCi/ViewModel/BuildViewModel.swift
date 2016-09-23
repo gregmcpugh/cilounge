@@ -11,9 +11,9 @@ import UIKit
 import SwiftSpinner
 
 protocol BuildViewModelProtocol:class{
-  
   func reloadCollectionView()
   func reloadButtons(projectName:String, branchName:String)
+  func navigateToSettings()
 }
 
 class BuildViewModel{
@@ -23,13 +23,13 @@ class BuildViewModel{
   var selectedBuild:Build?
   var runningBuilds:[Build]?
   var speakerOn:Bool = false
-
+  var builds:Array<Build>?
   
   lazy var alertViewManager: UIAlertControllerManager = {
     UIAlertControllerManager()
   }()
+  
   weak var delgate:BuildViewModelProtocol?
-  var builds:Array<Build>?
   
   func getData(){
     getAllBuilds()
@@ -41,7 +41,7 @@ class BuildViewModel{
     }
     getBuildForProjects(selectedProject?.username, projectName: selectedProject?.reponame, branch: selectedBranchName, successCallback: { (response) -> () in
       dispatch_async(dispatch_get_main_queue()){
-          SwiftSpinner.showWithDuration(2.0, title: "OK ITS Finished", animated: false)
+          SwiftSpinner.showWithDuration(0.4, title: "OK ITS Finished", animated: false)
       }
       if let res = (response as? NSArray) {
         self.builds = res as? Array<Build>
@@ -56,9 +56,13 @@ class BuildViewModel{
       }) { (error) -> () in
         dispatch_async(dispatch_get_main_queue()){
         SwiftSpinner.hide()
+        }
+        if error.code == 401 {
+          self.alertViewManager.showAlertView("Invalied API Key", message: "The API key provided is either missing or incorrect, please try again.", cancelButtonTitle: "Ok", cancelButtonAction: self.delgate?.navigateToSettings, otherButtonTitles: nil, otherButtonActions: nil)
+        } else {
           self.alertViewManager.showAlertView("Error", message: error.localizedDescription, cancelButtonTitle: "Ok", cancelButtonAction: nil, otherButtonTitles: nil, otherButtonActions: nil)
         }
-    }
+      }
   }
   
   func speakerToggle() -> String{
