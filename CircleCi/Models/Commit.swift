@@ -12,7 +12,7 @@ import ObjectMapper
 class Commit: Mappable {
   
  var body: String?
- var date: NSDate?
+ var date: Date?
  var sha1: String?
  var subject: String?
  var urlString: String?
@@ -22,7 +22,7 @@ class Commit: Mappable {
  var project: Project?
  var triggeredBuilds: NSSet?
   
-  required init?(_ map: Map) {
+  required init?(map: Map) {
     
   }
   

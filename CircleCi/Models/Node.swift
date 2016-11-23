@@ -18,7 +18,7 @@ class Node: Mappable {
   var nodeID: String?
   var builds: NSSet?
   
-  required init?(_ map: Map) {
+  required init?(map: Map) {
     
   }
   

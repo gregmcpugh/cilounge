@@ -22,7 +22,7 @@ class ViewController: UIViewController {
   
   var refreshWaitTime:Int?
   var currentRefreshTime = 0
-  var timer:NSTimer?
+  var timer:Timer?
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -31,18 +31,18 @@ class ViewController: UIViewController {
 
     buildViewModel = BuildViewModel()
     buildViewModel?.delgate = self
-    branchBarButton = UIBarButtonItem(title: "Branch", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(ViewController.branchAction))
-    projectBarButton = UIBarButtonItem(title: "Project", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(ViewController.projectAction))
+    branchBarButton = UIBarButtonItem(title: "Branch", style: UIBarButtonItemStyle.plain, target: self, action: #selector(ViewController.branchAction))
+    projectBarButton = UIBarButtonItem(title: "Project", style: UIBarButtonItemStyle.plain, target: self, action: #selector(ViewController.projectAction))
    self.navigationItem.rightBarButtonItems  = [branchBarButton, projectBarButton]
     
   }
   
-  override func viewDidAppear(animated: Bool) {
+  override func viewDidAppear(_ animated: Bool) {
     buildViewModel?.getData()
     refreshWaitTime = Int(getRefreshRate())
   }
   
-  override func viewWillDisappear(animated: Bool) {
+  override func viewWillDisappear(_ animated: Bool) {
     timer?.invalidate()
     currentRefreshTime = 0
   }
@@ -57,8 +57,8 @@ class ViewController: UIViewController {
     }
   }
   
-  @IBAction func settingsAction(sender: AnyObject) {
-    performSegueWithIdentifier("seg_main_to_settings", sender: nil)
+  @IBAction func settingsAction(_ sender: AnyObject) {
+    performSegue(withIdentifier: "seg_main_to_settings", sender: nil)
   }
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
@@ -72,7 +72,7 @@ class ViewController: UIViewController {
     buildViewModel?.projectAction()
   }
   
-  @IBAction func refreshAction(sender: AnyObject) {
+  @IBAction func refreshAction(_ sender: AnyObject) {
     currentRefreshTime = 0
     buildViewModel?.getData()
   }
@@ -85,35 +85,35 @@ class ViewController: UIViewController {
 extension ViewController:BuildViewModelProtocol{
   func reloadCollectionView() {
     timer?.invalidate()
-    timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(ViewController.update), userInfo: nil, repeats: true);
+    timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(ViewController.update), userInfo: nil, repeats: true);
     collectionView.reloadData()
   }
   
-  func reloadButtons(projectName: String, branchName: String) {
+  func reloadButtons(_ projectName: String, branchName: String) {
     self.navigationItem.rightBarButtonItem = nil
-    branchBarButton = UIBarButtonItem(title: branchName, style: UIBarButtonItemStyle.Plain, target: self, action: #selector(ViewController.branchAction))
-    projectBarButton = UIBarButtonItem(title:  projectName, style: UIBarButtonItemStyle.Plain, target: self, action: #selector(ViewController.projectAction))
+    branchBarButton = UIBarButtonItem(title: branchName, style: UIBarButtonItemStyle.plain, target: self, action: #selector(ViewController.branchAction))
+    projectBarButton = UIBarButtonItem(title:  projectName, style: UIBarButtonItemStyle.plain, target: self, action: #selector(ViewController.projectAction))
     self.navigationItem.rightBarButtonItems  = [branchBarButton, projectBarButton]
   }
   
   func navigateToSettings() {
-    performSegueWithIdentifier("seg_main_to_settings", sender: nil)
+    performSegue(withIdentifier: "seg_main_to_settings", sender: nil)
   }
 }
 
 extension ViewController:UICollectionViewDataSource{
   
-  func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+  func numberOfSections(in collectionView: UICollectionView) -> Int {
     return buildViewModel!.numberOfSectionsInCollectionView()
   }
-  func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     
-    let cell = collectionView.dequeueReusableCellWithReuseIdentifier("BuildCollectionViewCell", forIndexPath: indexPath) as! BuildCollectionViewCell
+    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BuildCollectionViewCell", for: indexPath) as! BuildCollectionViewCell
     
     if let buildModel = buildViewModel?.builds?[indexPath.row]{
       if let buildNum = buildModel.build_num{
-        print("buildStatus" + buildModel.status! + " number :" + String(buildNum))
-        cell.buildLabel.text = "#\(String(buildNum))"
+        print("buildStatus" + buildModel.status! + " number :" + String(describing: buildNum))
+        cell.buildLabel.text = "#\(String(describing: buildNum))"
       }
       cell.branchLabel.text = buildModel.branch ?? ""
       cell.projectLabel.text = buildModel.reponame ?? ""
@@ -124,9 +124,9 @@ extension ViewController:UICollectionViewDataSource{
       cell.timeLabel.text = buildModel.getTimeTaken()
       cell.contentView.layer.cornerRadius = 6.0
       cell.contentView.layer.borderWidth = 1.0
-      cell.contentView.layer.borderColor = buildModel.statusColour().CGColor
+      cell.contentView.layer.borderColor = buildModel.statusColour().cgColor
       cell.contentView.layer.masksToBounds = true
-      cell.layer.shadowOffset = CGSizeMake(0, 2.0)
+      cell.layer.shadowOffset = CGSize(width: 0, height: 2.0)
       cell.layer.shadowRadius = 2.0
       cell.layer.shadowOpacity = 1.0
       cell.layer.masksToBounds = false
@@ -134,26 +134,26 @@ extension ViewController:UICollectionViewDataSource{
     }
     return cell
   }
-  func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return buildViewModel!.numberOfCellsInCollectionView()
   }
   
-  func collectionView(collectionView: UICollectionView, didUpdateFocusInContext context: UICollectionViewFocusUpdateContext, withAnimationCoordinator coordinator: UIFocusAnimationCoordinator) {
+  func collectionView(_ collectionView: UICollectionView, didUpdateFocusIn context: UICollectionViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
     if ((context.nextFocusedView) != nil){
       coordinator.addCoordinatedAnimations({ () -> Void in
-        context.nextFocusedView?.transform = CGAffineTransformMakeScale(1.1, 1.1)
+        context.nextFocusedView?.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
         }, completion: nil)
     }
     if ((context.previouslyFocusedView) != nil){
       coordinator.addCoordinatedAnimations({ () -> Void in
-        context.previouslyFocusedView?.transform = CGAffineTransformMakeScale(1.0, 1.0)
+        context.previouslyFocusedView?.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
         }, completion: nil)
     }
   }
 }
 
 extension ViewController:UICollectionViewDelegate{
-  func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     buildViewModel?.didSelectCellAtIndexPath(indexPath)
   }
 }

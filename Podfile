@@ -4,7 +4,7 @@
 use_frameworks!
 
 target 'CircleCi' do
-   pod 'ObjectMapper', '~> 1.2.0'
+   pod 'ObjectMapper', '~> 2.2'
    pod 'SwiftSpinner'
    
 end

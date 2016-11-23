@@ -11,7 +11,7 @@ import ObjectMapper
 
 class Build: Mappable {
   
-  var committer_date: NSDate?
+  var committer_date: Date?
   var build_num : NSNumber?
   var subject: String?
   var reponame :String?
@@ -20,8 +20,8 @@ class Build: Mappable {
   var dontBuild: String?
   var timedout: Bool?
   var number: NSNumber?
-  var queuedAt: NSDate?
-  var startedAt: NSDate?
+  var queuedAt: Date?
+  var startedAt: Date?
   var status: String?
   var build_time_millis: Int?
   var branch:String?
@@ -31,7 +31,7 @@ class Build: Mappable {
   var user: User?
   var retries:String?
   var username:String?
-  required init?(_ map: Map) {
+  required init?(map: Map) {
     
   }
   
@@ -76,10 +76,10 @@ class Build: Mappable {
       case "not_run":
         return  UIColor(red: (119/255), green: (119/255), blue: (119/255), alpha: 1)
       default:
-        return UIColor.blackColor()
+        return UIColor.black
       }
     }
-    return UIColor.blackColor()
+    return UIColor.black
   }
   
   func getTimeTaken() -> String {
@@ -97,18 +97,18 @@ func ==(lhs: Build, rhs: Build) -> Bool {
 }
 
 
-extension NSTimeInterval {
+extension TimeInterval {
   var minuteSecondMS: String {
     return String(format:"%d:%02d.%03d", minute , second, millisecond  )
   }
   var minute: Int {
-    return Int((self/60.0)%60)
+    return Int((self/60.0).truncatingRemainder(dividingBy: 60))
   }
   var second: Int {
-    return Int(self % 60)
+    return Int(self.truncatingRemainder(dividingBy: 60))
   }
   var millisecond: Int {
-    return Int(self*1000 % 1000 )
+    return Int((self*1000).truncatingRemainder(dividingBy: 1000) )
   }
 }
 

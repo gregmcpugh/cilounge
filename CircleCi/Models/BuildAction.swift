@@ -14,8 +14,8 @@ class BuildAction: Mappable {
 
   var bashCommand: String?
   var command: String?
-  var endedAt: NSDate?
-  var startedAt: NSDate?
+  var endedAt: Date?
+  var startedAt: Date?
   var exitCode: NSNumber?
   var hasOutput: NSNumber?
   var index: NSNumber?
@@ -36,7 +36,7 @@ class BuildAction: Mappable {
   var buildStep: BuildStep?
   var buildActionID: String?
 
-  required init?(_ map: Map) {
+  required init?(map: Map) {
     
   }
 

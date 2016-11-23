@@ -21,7 +21,7 @@ class SettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
       title = "Settings"
-      RefreshButton.setTitle("Refresh rate: \(getRefreshRate())", forState: UIControlState.Normal)
+      RefreshButton.setTitle("Refresh rate: \(getRefreshRate())", for: UIControlState())
       AccessTokenTextField.text = "\(getCurrentAccessToken())"
     }
 
@@ -30,18 +30,18 @@ class SettingsViewController: UIViewController {
 
     }
   
-  @IBAction func refreshAction(sender: AnyObject) {
+  @IBAction func refreshAction(_ sender: AnyObject) {
     alertViewManager.showAlertList("Select Refresh Rate", message: "", cancelButtonTitle: "Cancel", cancelButtonAction: nil, otherButtonTitles: refreshOptions) { index -> Void in
       let id = index as! Int
       let selectedTime = self.refreshOptions[id]
       saveRefreshRate(selectedTime)
-      self.RefreshButton.setTitle("Refresh rate: \(selectedTime)", forState: UIControlState.Normal)
+      self.RefreshButton.setTitle("Refresh rate: \(selectedTime)", for: UIControlState())
      }
 }
 }
 
 extension SettingsViewController:UITextFieldDelegate{
-  func textFieldShouldEndEditing(textField: UITextField) -> Bool {
+  func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
 
     if let text = textField.text{
       saveAccessToken(text)

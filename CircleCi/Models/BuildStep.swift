@@ -18,7 +18,7 @@ class BuildStep: Mappable {
    var build: Build?
    var buildStepID: String?
   
-  required init?(_ map: Map) {
+  required init?(map: Map) {
     
   }
   
