@@ -12,7 +12,7 @@ import SwiftSpinner
 
 protocol BuildViewModelProtocol:class{
   func reloadCollectionView()
-  func reloadButtons(projectName:String, branchName:String)
+  func reloadButtons(_ projectName:String, branchName:String)
   func navigateToSettings()
 }
 
@@ -36,16 +36,16 @@ class BuildViewModel{
   }
   
   func getAllBuilds() {
-    dispatch_async(dispatch_get_main_queue()){
+    DispatchQueue.main.async{
       SwiftSpinner.show("ITS LOADING!!! GET OVER IT")
     }
     getBuildForProjects(selectedProject?.username, projectName: selectedProject?.reponame, branch: selectedBranchName, successCallback: { (response) -> () in
-      dispatch_async(dispatch_get_main_queue()){
+      DispatchQueue.main.async{
           SwiftSpinner.showWithDuration(0.4, title: "OK ITS Finished", animated: false)
       }
       if let res = (response as? NSArray) {
         self.builds = res as? Array<Build>
-        dispatch_async(dispatch_get_main_queue()){
+        DispatchQueue.main.async{
           self.delgate?.reloadCollectionView()
         }
         getProjects({response -> () in
@@ -54,7 +54,7 @@ class BuildViewModel{
         }
       }
       }) { (error) -> () in
-        dispatch_async(dispatch_get_main_queue()){
+        DispatchQueue.main.async{
         SwiftSpinner.hide()
         }
         if error.code == 401 {
@@ -73,7 +73,7 @@ class BuildViewModel{
     return "speaker_off"
   }
 
-  func checkPreviousBuildStatus(newBuilds:[Build]){
+  func checkPreviousBuildStatus(_ newBuilds:[Build]){
     
   }
   
@@ -123,7 +123,7 @@ class BuildViewModel{
     
   }
   
-  func didSelectCellAtIndexPath(indexPath:NSIndexPath){
+  func didSelectCellAtIndexPath(_ indexPath:IndexPath){
     selectedBuild = builds?[indexPath.row]
     alertViewManager.showAlertView("TAKE CONTROL!!!!", message: "You have the power", cancelButtonTitle: "Cancel", cancelButtonAction: nil, otherButtonTitles:["STOP THE BUILD","Rebuild"], otherButtonActions:[ cancelAction,rebuildAction])
   }

@@ -15,7 +15,7 @@ class Project: Mappable {
   var reponame:String?
   init(dic:NSDictionary){ 
   }
-  required init?(_ map: Map) {
+  required init?(map: Map) {
   }
   
   func mapping(map: Map) {

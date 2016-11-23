@@ -18,26 +18,27 @@ func getRefreshRate() -> String {
   return getStringFromLocalStorage(LocalStorageKey.RefreshRate.rawValue) ?? "30"
 }
 
-func saveRefreshRate(rate:String){
+func saveRefreshRate(_ rate:String){
   saveStringToLocalStorage(LocalStorageKey.RefreshRate.rawValue,value: rate)
 }
 
 
 func getCurrentAccessToken() -> String {
-  return getStringFromLocalStorage(LocalStorageKey.AccessToken.rawValue) ?? ""
+//  return getStringFromLocalStorage(LocalStorageKey.AccessToken.rawValue) ?? ""
+    return "ab67616dab1010826315a76e2ee9d0fff20fd714"
 }
 
-func saveAccessToken(accessToken:String){
+func saveAccessToken(_ accessToken:String){
   saveStringToLocalStorage(LocalStorageKey.AccessToken.rawValue,value: accessToken)
 }
 
-private func saveStringToLocalStorage(key:String, value:String){
-  let defaults = NSUserDefaults.standardUserDefaults()
-  defaults.setObject(value, forKey: key)
+private func saveStringToLocalStorage(_ key:String, value:String){
+  let defaults = UserDefaults.standard
+  defaults.set(value, forKey: key)
   defaults.synchronize()
 }
 
-private func getStringFromLocalStorage(key:String) -> String?{
-  let defaults = NSUserDefaults.standardUserDefaults()
-  return defaults.stringForKey(key)
+private func getStringFromLocalStorage(_ key:String) -> String?{
+  let defaults = UserDefaults.standard
+  return defaults.string(forKey: key)
 }

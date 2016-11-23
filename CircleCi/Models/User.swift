@@ -14,7 +14,7 @@ class User: Mappable {
   var email: String?
   var login: String?
   var is_user:Bool?
-  required init?(_ map: Map) {
+  required init?(map: Map) {
   }
   
   func mapping(map: Map) {

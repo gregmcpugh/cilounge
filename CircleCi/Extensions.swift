@@ -8,11 +8,11 @@
 
 
 extension Array where Element: Equatable {
-  func arrayRemovingObject(object: Element) -> [Element] {
+  func arrayRemovingObject(_ object: Element) -> [Element] {
     return filter { $0 != object }
   }
   
-  func itemExists<T where T : Equatable>(obj: T) -> Bool {
+  func itemExists<T>(_ obj: T) -> Bool where T : Equatable {
     return self.filter({$0 as? T == obj}).count > 0
   }
   

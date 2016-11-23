@@ -12,100 +12,102 @@ import ObjectMapper
 let BASE_URL = "https://circleci.com/api/v1/"
 
 enum CircleAPI {
-  case RecenBuilds
-  case RecentBuildProject(String,String)
-  case RecentBuildBranch(String, String, String)
-  case CancelBuild(String, String, String)
-  case RetryBuild(String, String, String)
-  case Projects
+  case recenBuilds
+  case recentBuildProject(String,String)
+  case recentBuildBranch(String, String, String)
+  case cancelBuild(String, String, String)
+  case retryBuild(String, String, String)
+  case projects
   var path : String {
     switch self {
-    case RecenBuilds:                                        return BASE_URL + "recent-builds?circle-token=" +  getCurrentAccessToken()
-    case RecentBuildProject(let user, let project):                    return BASE_URL + "project/" + user + "/" + project + "?circle-token=" + getCurrentAccessToken()
-    case RecentBuildBranch(let user,let project, let branch):          return BASE_URL + "project/" + user + "/" + project  + "/tree/" + branch + "?circle-token=" +  getCurrentAccessToken()
-    case CancelBuild(let user, let project,let buildNumber): return BASE_URL + "project/" + user + "/" + project + "/" + buildNumber + "/cancel?circle-token="  +  getCurrentAccessToken()
-    case RetryBuild(let user, let project,let buildNumber): return BASE_URL + "project/" + user + "/" + project + "/" + buildNumber + "/retry?circle-token="  +  getCurrentAccessToken()
-    case Projects:                                           return BASE_URL + "projects?circle-token=" + getCurrentAccessToken()
+    case .recenBuilds:                                        return BASE_URL + "recent-builds?circle-token=" +  getCurrentAccessToken()
+    case .recentBuildProject(let user, let project):                    return BASE_URL + "project/" + user + "/" + project + "?circle-token=" + getCurrentAccessToken()
+    case .recentBuildBranch(let user,let project, let branch):          return BASE_URL + "project/" + user + "/" + project  + "/tree/" + branch + "?circle-token=" +  getCurrentAccessToken()
+    case .cancelBuild(let user, let project,let buildNumber): return BASE_URL + "project/" + user + "/" + project + "/" + buildNumber + "/cancel?circle-token="  +  getCurrentAccessToken()
+    case .retryBuild(let user, let project,let buildNumber): return BASE_URL + "project/" + user + "/" + project + "/" + buildNumber + "/retry?circle-token="  +  getCurrentAccessToken()
+    case .projects:                                           return BASE_URL + "projects?circle-token=" + getCurrentAccessToken()
     }
   }
 }
 
-func getBuildForProjects(userName:String?, projectName:String?, branch:String? ,successCallback:AnyObject ->() ,  failureCallback:NSError!->() ){
+func getBuildForProjects(_ userName:String?, projectName:String?, branch:String? ,successCallback:@escaping ([Build]) ->() ,  failureCallback:@escaping (NSError!)->() ){
   
-  var url: NSURL = NSURL(string: CircleAPI.RecenBuilds.path)!
-  if let userName = userName , projectName = projectName, branch = branch{
-    url  = NSURL(string: CircleAPI.RecentBuildBranch(userName, projectName, branch).path)!
+  var url: URL = URL(string: CircleAPI.recenBuilds.path)!
+  if let userName = userName , let projectName = projectName, let branch = branch{
+    url  = URL(string: CircleAPI.recentBuildBranch(userName, projectName, branch).path)!
   }
-  else if let userName = userName , projectName = projectName {
-    url  = NSURL(string: CircleAPI.RecentBuildProject(userName, projectName).path)!
+  else if let userName = userName , let projectName = projectName {
+    url  = URL(string: CircleAPI.recentBuildProject(userName, projectName).path)!
   }
   
-  let request1: NSMutableURLRequest = NSMutableURLRequest(URL: url)
+  var request1: URLRequest = URLRequest(url: url)
   request1.setValue("application/json", forHTTPHeaderField: "Content-Type")
   request1.setValue("application/json", forHTTPHeaderField: "Accept")
   
-  let task  = NSURLSession.sharedSession().dataTaskWithRequest(request1){ data, response, error in
-    if let httpResponse = response as? NSHTTPURLResponse {
+  let task  = URLSession.shared.dataTask(with: request1, completionHandler: { data, response, error in
+    if let httpResponse = response as? HTTPURLResponse {
       if httpResponse.statusCode == 401{
         failureCallback(NSError(domain: "Unauthorised", code: 401, userInfo: nil))
       }
       else if httpResponse.statusCode == 200{
-        if let jsonResult: NSArray = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSArray {
-          successCallback(Mapper<Build>().mapArray(jsonResult)!)
+        if let jsonResult: [[String: Any]] = try! JSONSerialization.jsonObject(with: data!, options:  .allowFragments) as? [[String: Any]] {
+            let mapper = Mapper<Build>()
+            let value = mapper.mapArray(JSONArray: jsonResult)!
+            successCallback(value)
         }
       }
     }
 
     if let error = error {
-      failureCallback(error)
+      failureCallback(error as NSError!)
     }
-  }
+  })
   task.resume()
   
 }
 
 
-func getProjects(successCallback:AnyObject ->() ,  failureCallback:NSError!->() ){
-  let url: NSURL = NSURL(string: CircleAPI.Projects.path)!
-  let request1: NSMutableURLRequest = NSMutableURLRequest(URL: url)
+func getProjects(_ successCallback:@escaping (AnyObject) ->() ,  failureCallback:@escaping (NSError!)->() ){
+  let url: URL = URL(string: CircleAPI.projects.path)!
+  var request1: URLRequest = URLRequest(url: url)
   request1.setValue("application/json", forHTTPHeaderField: "Content-Type")
   request1.setValue("application/json", forHTTPHeaderField: "Accept")
   
-  let task  = NSURLSession.sharedSession().dataTaskWithRequest(request1){ data, response, error in
+    let task  = URLSession.shared.dataTask(with: request1, completionHandler: {data, response, error in
     
-    if let httpResponse = response as? NSHTTPURLResponse {
+    if let httpResponse = response as? HTTPURLResponse {
       
       if httpResponse.statusCode == 401{
         failureCallback(NSError(domain: "Unauthorised", code: 401, userInfo: nil))
       }
       if httpResponse.statusCode == 200{
-        if let jsonResult: NSArray = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSArray {
-          let projects =   Mapper<Project>().mapArray(jsonResult)
+        if let jsonResult: String = try! JSONSerialization.jsonObject(with: data!, options: []) as? String {
+            let projects =   Mapper<Project>().map(JSONString: jsonResult)
           successCallback(projects!)
         }
       }
     }
     if let error = error {
-      failureCallback(error)
+      failureCallback(error as NSError!)
     }
-  }
+  })
   task.resume()
 }
 
-func cancelBuild(build:Build, successCallback:Void ->() ,  failureCallback:NSError!->() ){
-  if let username = build.username, reponame = build.reponame, buildNum = build.build_num{
-    let url: NSURL = NSURL(string: CircleAPI.CancelBuild(username, reponame, buildNum.stringValue).path)!
-    let request1: NSMutableURLRequest = NSMutableURLRequest(URL: url)
-    request1.HTTPMethod = "POST"
+func cancelBuild(_ build:Build, successCallback:@escaping (Void) ->() ,  failureCallback:@escaping (NSError!)->() ){
+  if let username = build.username, let reponame = build.reponame, let buildNum = build.build_num{
+    let url: URL = URL(string: CircleAPI.cancelBuild(username, reponame, buildNum.stringValue).path)!
+    var request1: URLRequest = URLRequest(url: url)
+    request1.httpMethod = "POST"
     request1.setValue("application/json", forHTTPHeaderField: "Content-Type")
     request1.setValue("application/json", forHTTPHeaderField: "Accept")
-    let task  = NSURLSession.sharedSession().dataTaskWithRequest(request1){ data, response, error in
-      if let httpResponse = response as? NSHTTPURLResponse {
+    let task  = URLSession.shared.dataTask(with: request1, completionHandler: { data, response, error in
+      if let httpResponse = response as? HTTPURLResponse {
         if httpResponse.statusCode == 401{
           failureCallback(NSError(domain: "Unauthorised", code: 401, userInfo: nil))
         }
         if httpResponse.statusCode == 200{
-          if let jsonResult: NSDictionary = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSDictionary {
+          if let jsonResult: NSDictionary = try! JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as? NSDictionary {
             if let outcome = jsonResult["outcome"]{
               if outcome as! String == "canceled"{
                 successCallback()
@@ -117,9 +119,9 @@ func cancelBuild(build:Build, successCallback:Void ->() ,  failureCallback:NSErr
       }
       
       if let error = error {
-        failureCallback(error)
+        failureCallback(error as NSError!)
       }
-    }
+    })
     
     task.resume()
     
@@ -131,20 +133,20 @@ func cancelBuild(build:Build, successCallback:Void ->() ,  failureCallback:NSErr
 
 
 
-func rebuild(build:Build, successCallback:Void ->() ,  failureCallback:NSError!->() ){
-  if let username = build.username, reponame = build.reponame, buildNum = build.build_num{
-    let url: NSURL = NSURL(string: CircleAPI.RetryBuild(username, reponame, buildNum.stringValue).path)!
-    let request1: NSMutableURLRequest = NSMutableURLRequest(URL: url)
-    request1.HTTPMethod = "POST"
+func rebuild(_ build:Build, successCallback:@escaping (Void) ->() ,  failureCallback:@escaping (NSError!)->() ){
+  if let username = build.username, let reponame = build.reponame, let buildNum = build.build_num{
+    let url: URL = URL(string: CircleAPI.retryBuild(username, reponame, buildNum.stringValue).path)!
+    var request1: URLRequest = URLRequest(url: url)
+    request1.httpMethod = "POST"
     request1.setValue("application/json", forHTTPHeaderField: "Content-Type")
     request1.setValue("application/json", forHTTPHeaderField: "Accept")
-    let task  = NSURLSession.sharedSession().dataTaskWithRequest(request1){ data, response, error in
-      if let httpResponse = response as? NSHTTPURLResponse {
+    let task  = URLSession.shared.dataTask(with: request1, completionHandler: { data, response, error in
+      if let httpResponse = response as? HTTPURLResponse {
         if httpResponse.statusCode == 401{
           failureCallback(NSError(domain: "Unauthorised", code: 401, userInfo: nil))
         }
         if httpResponse.statusCode == 200{
-          if let jsonResult: NSDictionary = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSDictionary {
+          if let jsonResult: NSDictionary = try! JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as! NSDictionary {
             if let lifecycle = jsonResult["lifecycle"]{
               if lifecycle as! String == "queued"{
                 successCallback()
@@ -155,11 +157,11 @@ func rebuild(build:Build, successCallback:Void ->() ,  failureCallback:NSError!-
         }
         
         if let error = error {
-          failureCallback(error)
+          failureCallback(error as NSError!)
         }
         
       }
-    }
+    })
     task.resume()
     
   }
