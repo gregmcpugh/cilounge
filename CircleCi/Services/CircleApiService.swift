@@ -67,7 +67,7 @@ func getBuildForProjects(_ userName:String?, projectName:String?, branch:String?
 }
 
 
-func getProjects(_ successCallback:@escaping (AnyObject) ->() ,  failureCallback:@escaping (NSError!)->() ){
+func getProjects(_ successCallback:@escaping ([Project]) ->() ,  failureCallback:@escaping (NSError!)->() ){
   let url: URL = URL(string: CircleAPI.projects.path)!
   var request1: URLRequest = URLRequest(url: url)
   request1.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -81,9 +81,10 @@ func getProjects(_ successCallback:@escaping (AnyObject) ->() ,  failureCallback
         failureCallback(NSError(domain: "Unauthorised", code: 401, userInfo: nil))
       }
       if httpResponse.statusCode == 200{
-        if let jsonResult: String = try! JSONSerialization.jsonObject(with: data!, options: []) as? String {
-            let projects =   Mapper<Project>().map(JSONString: jsonResult)
-          successCallback(projects!)
+        if let jsonResult: [[String: Any]] = try! JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? [[String: Any]] {
+            let mapper = Mapper<Project>()
+            let value = mapper.mapArray(JSONArray: jsonResult)!
+          successCallback(value)
         }
       }
     }
@@ -107,7 +108,7 @@ func cancelBuild(_ build:Build, successCallback:@escaping (Void) ->() ,  failure
           failureCallback(NSError(domain: "Unauthorised", code: 401, userInfo: nil))
         }
         if httpResponse.statusCode == 200{
-          if let jsonResult: NSDictionary = try! JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as? NSDictionary {
+          if let jsonResult: NSDictionary = try! JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? NSDictionary {
             if let outcome = jsonResult["outcome"]{
               if outcome as! String == "canceled"{
                 successCallback()
@@ -146,7 +147,7 @@ func rebuild(_ build:Build, successCallback:@escaping (Void) ->() ,  failureCall
           failureCallback(NSError(domain: "Unauthorised", code: 401, userInfo: nil))
         }
         if httpResponse.statusCode == 200{
-          if let jsonResult: NSDictionary = try! JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as! NSDictionary {
+          if let jsonResult: NSDictionary = try! JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? NSDictionary {
             if let lifecycle = jsonResult["lifecycle"]{
               if lifecycle as! String == "queued"{
                 successCallback()
