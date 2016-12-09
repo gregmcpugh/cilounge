@@ -24,8 +24,7 @@ func saveRefreshRate(_ rate:String){
 
 
 func getCurrentAccessToken() -> String {
-//  return getStringFromLocalStorage(LocalStorageKey.AccessToken.rawValue) ?? ""
-    return "ab67616dab1010826315a76e2ee9d0fff20fd714"
+  return getStringFromLocalStorage(LocalStorageKey.AccessToken.rawValue) ?? ""
 }
 
 func saveAccessToken(_ accessToken:String){

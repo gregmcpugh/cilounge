@@ -6,6 +6,8 @@ use_frameworks!
 target 'CircleCi' do
    pod 'ObjectMapper', '~> 2.2'
    pod 'SwiftSpinner'
+   pod 'Fabric'
+   pod 'Crashlytics'
    
 end
 
